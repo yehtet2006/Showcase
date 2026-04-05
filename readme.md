@@ -15,6 +15,12 @@ scripts under de package.json
     "build": "tsc" will create a file under dist to compile ts into js
 add nodemon.json in de backend
 
+add .env file
+-PORT, DB_URL, BASE_URl, NODE_ENV, CLERK KEys
+
+
+db push schema code
+
 ---
 Setting up the frontend
 
