@@ -15,15 +15,19 @@ app.use(express.urlencoded({ extended: true}))
 app.use(cors({origin: ENV.FRONTEND_URL})) 
 
 app.get("/fd/health", (req, res) => {
-    res.status(200).json({
+    try {
+        res.status(200).json({
         "message": "The server is running fine",
         "endpoints": {
             "users" : "/api/users",
-            "transactions" : "/fd/transactions",
-            "categories" : "/fd/categories",
-            "history" : "/fd/history"
-        }
-    })
+            "transactions" : "/api/transactions",
+            "categories" : "/api/categories",
+            "history" : "/api/history"
+        }})
+    } catch (error) {
+        console.error("Health check failed:", error);
+        return res.status(500).json({ message: "Health check failed", error: error instanceof Error ? error.message : String(error) });
+    }
 })
 
 app.listen(ENV.PORT, () => {
