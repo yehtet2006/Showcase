@@ -1,10 +1,10 @@
 import { db } from ".";
-import { desc, and, eq, gte, lte } from "drizzle-orm";
+import { and, eq, gte, lte } from "drizzle-orm";
 import { transactions, type NewTransaction } from "./schema";
 
 // Transaction queries
 export const createTransaction = async (transaction: NewTransaction) => {
-    const [newTransaction] = await db.insert(transaction).values(transaction).returning();
+    const [newTransaction] = await db.insert(transactions).values(transaction).returning();
     return newTransaction;
 };
 
@@ -19,7 +19,7 @@ export const getTransactionById = async (transactionId: string, userId: string) 
 };
 
 // Get all transactions for a user, optionally filtered by category and/or date range
-export const getTransactionByUserId = async (
+export const getTransactionsByUserId = async (
     userId: string,
     filters?: { categoryId?: string; from?: Date; to?: Date; }
 ) => {
@@ -52,6 +52,15 @@ export const updateTransaction = async (transactionId: string, userId: string, d
     const [updatedTransaction] = await db.update(transactions).set({ ...data, updatedAt: new Date()}).where(eq(transactions.userId, userId)).returning();
     return updatedTransaction;
 
+}
+
+export const deleteTransaction = async (transactionId: string, userId: string) => {
+    const existingTransaction = await getTransactionById(transactionId, userId)
+    if (!existingTransaction){
+        throw new Error(`Transaction with id ${transactionId} not found for this user`)
+    }
+    await db.delete(transactions).where(eq(transactions.id, transactionId));
+    return existingTransaction;
 }
 
 // See queries ts under the projects C

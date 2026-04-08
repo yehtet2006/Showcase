@@ -8,6 +8,10 @@ export const createUser = async (user: NewUser) => {
     return newUser;
 };
 
+export const getAllUsers = async () => {
+    return await db.query.users.findMany();
+}
+
 export const getUserById = async (id: string) => {
     return await db.query.users.findFirst({ where: eq(users.id, id)}); 
 };
@@ -29,5 +33,13 @@ export const upsertUser = async (user: NewUser) => {
         return updateUser(user.id, user);
     }
     return createUser(user);
+};
+
+export const deleteUser = async (id: string) => {
+    const existingUser = await getUserById(id);
+    if (!existingUser) {
+        throw new Error(`User with id ${id} not found`);
+    }
+    await db.delete(users).where(eq(users.id, id));
 };
 
