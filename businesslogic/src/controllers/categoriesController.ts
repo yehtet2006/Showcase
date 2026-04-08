@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as categoryQueries from "../db/categoryQueries";
+import * as categoryQueries from "../db/categoriesQueries";
 
 import { getAuth } from "@clerk/express";
 
@@ -56,7 +56,7 @@ export async function getCategory(req: Request, res: Response) {
             return;
         }
  
-        const { id } = req.params;
+        const { id } = req.params as { id: string };
         const category = await categoryQueries.getCategoryById(id);
  
         if (!category) {
@@ -84,7 +84,7 @@ export async function deleteCategory(req: Request, res: Response) {
             return;
         }
  
-        const { id } = req.params;
+        const { id } = req.params as { id: string };
         await categoryQueries.deleteCategory(id, userId);
         res.status(204).send();
     } catch (error) {
@@ -101,7 +101,7 @@ export async function updateCategory(req: Request, res: Response) {
             return;
         }
  
-        const { id } = req.params;
+        const { id } = req.params as { id: string };
         const { name, color } = req.body;
  
         if (!name && !color) {
