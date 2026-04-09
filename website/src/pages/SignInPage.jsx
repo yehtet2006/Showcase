@@ -1,8 +1,11 @@
-import React from 'react'
+import { SignInButton } from "@clerk/react"
 
 function SignInPage() {
   return (
-    <div>SignInPage</div>
+    <div>
+      <h1>Sign In</h1>
+      <SignInButton />
+    </div>
   )
 }
 

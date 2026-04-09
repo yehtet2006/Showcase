@@ -18,7 +18,7 @@ app.use(clerkMiddleware());
 // Middleware to parse URL-encoded bodies from incoming requests, with extended syntax support
 app.use(express.urlencoded({ extended: true})) 
 // Middleware to enable Cross-Origin Resource Sharing (CORS) for all routes, allowing requests from different origins
-app.use(cors({origin: ENV.FRONTEND_URL})) 
+app.use(cors({origin: ENV.FRONTEND_URL, credentials: true})); 
 
 app.get("/api/health", (req, res) => {
     try {

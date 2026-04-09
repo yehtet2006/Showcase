@@ -1,8 +1,12 @@
-import React from 'react'
+import { SignInButton, SignOutButton } from "@clerk/react"
 
 function ProfilePage() {
   return (
-    <div>ProfilePage</div>
+    <>
+      <h1>Profile Page</h1>
+      <SignInButton />
+      <SignOutButton />
+    </>
   )
 }
 
