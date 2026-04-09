@@ -10,13 +10,18 @@ import ProfilePage from './pages/ProfilePage'
 import SettingsPage from './pages/SettingsPage'
 import useAuthReq from './hooks/useAuthReq'
 import useUserSync from './hooks/useUserSync'
+import { useUser } from './hooks/useUsers'
+import { useAuth } from '@clerk/react'
 
 
 
 function App() {
+  const {userId} = useAuth();
+
+  const { data: userMe } = useUser(userId);
+
   const { isSignedIn, isClerkLoaded } = useAuthReq();
   useUserSync();
-  console.log('App rendered, isClerkLoaded:', isClerkLoaded, 'isSignedIn:', isSignedIn)
   if(!isClerkLoaded) return null;
 
   if (!isClerkLoaded) {
@@ -33,7 +38,7 @@ function App() {
           <Route path='/transactions' element={isSignedIn && <TransactionsPage />} />
           <Route path='/analytics' element={isSignedIn && <AnalyticsPage />} />
           <Route path='/profile' element={isSignedIn && <ProfilePage />} />
-          <Route path='/settings' element={isSignedIn && <SettingsPage />} />
+          <Route path='/settings' element={userMe?.role === "admin" && isSignedIn && <SettingsPage />} />
         </Routes>
       </main>
     </>

@@ -5,10 +5,12 @@ import { useAuth } from '@clerk/react';
 
 function SettingsPage() {
 
-  const {userId} = useAuth(); // 👈 replace with real ID
+  const {userId} = useAuth();
 
-  const { data: users, isLoading, error } = useUsers();
-  const { data: userMe } = useUser(userId);
+  const { data: users, isLoading, error } = useUsers(); // Fetch all users for admin view
+  const { data: userMe } = useUser(userId); // Fetch current user data to check role and display info
+
+  // Debugging logs
   console.log("userId:", userId);
   console.log("userMe:", userMe);
 
@@ -22,7 +24,7 @@ function SettingsPage() {
 
   return (
     <div>
-      <h1>Settings Page for {userMe?.email}</h1>
+      <h1>Settings Page for {userMe?.name}</h1>
 
       <h2>All Users:</h2>
       <ul>
@@ -31,7 +33,7 @@ function SettingsPage() {
             <li key={user.id}>
               {user.name} ({user.email}) - Role: {user.role}
             </li>
-          ))`s`
+          ))
         ) : (
           <li>No users found.</li>
         )}

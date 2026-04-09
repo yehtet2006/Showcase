@@ -36,6 +36,7 @@ export async function syncUser(req: Request, res: Response) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+
     // ✅ Fetch from Clerk (trusted)
     const clerkUser = await clerkClient.users.getUser(userId);
 
@@ -52,7 +53,7 @@ export async function syncUser(req: Request, res: Response) {
       id: userId,
       email,
       name,
-      role: "user",
+      role: undefined, // Don't set role on sync, it should be managed separately
     });
 
     res.status(200).json({ user });
@@ -70,11 +71,11 @@ export async function getAllUsers(req: Request, res: Response) {
             return;
         };
 
-        // const currentUser = await userQueries.getUserById(userId);
-        // if (!currentUser || currentUser.role.toLocaleLowerCase() !== "admin"){
-        //     res.status(403).json({ error: "Forbidden" });
-        //     return;
-        // }
+        const currentUser = await userQueries.getUserById(userId);
+        if (!currentUser || currentUser.role.toLocaleLowerCase() !== "admin"){
+            res.status(403).json({ error: "Forbidden" });
+            return;
+        }
 
         const users = await userQueries.getAllUsers();
         res.status(200).json({ users });
