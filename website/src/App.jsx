@@ -18,7 +18,7 @@ import { useAuth } from '@clerk/react'
 function App() {
   const {userId} = useAuth();
 
-  const { data: userMe } = useUser(userId);
+  const { data: currentUser } = useUser(userId);
 
   const { isSignedIn, isClerkLoaded } = useAuthReq();
   useUserSync();
@@ -38,7 +38,7 @@ function App() {
           <Route path='/transactions' element={isSignedIn && <TransactionsPage />} />
           <Route path='/analytics' element={isSignedIn && <AnalyticsPage />} />
           <Route path='/profile' element={isSignedIn && <ProfilePage />} />
-          <Route path='/settings' element={userMe?.role === "admin" && isSignedIn && <SettingsPage />} />
+          <Route path='/settings' element={currentUser?.role === "admin" && isSignedIn && <SettingsPage />} />
         </Routes>
       </main>
     </>

@@ -8,11 +8,11 @@ function SettingsPage() {
   const {userId} = useAuth();
 
   const { data: users, isLoading, error } = useUsers(); // Fetch all users for admin view
-  const { data: userMe } = useUser(userId); // Fetch current user data to check role and display info
+  const { data: currentUser } = useUser(userId); // Fetch current user data to check role and display info
 
-  // Debugging logs
+  // Debugging logs, remove in production
   console.log("userId:", userId);
-  console.log("userMe:", userMe);
+  console.log("currentUser:", currentUser);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -24,7 +24,7 @@ function SettingsPage() {
 
   return (
     <div>
-      <h1>Settings Page for {userMe?.name}</h1>
+      <h1>Settings Page for {currentUser?.name}</h1>
 
       <h2>All Users:</h2>
       <ul>

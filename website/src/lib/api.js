@@ -19,7 +19,7 @@ export const getUsers = async () => {
   return data.users;
 }
 
-export const getUserMe = async (id) => {
+export const getCurrentUser = async (id) => {
   const { data } = await api.get(`/users/${id}`);
   return data.user;
 }
