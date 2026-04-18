@@ -1,10 +1,11 @@
-import React from 'react'
+
 import {useUser, useUsers} from '../hooks/useUsers';
 import { useAuth } from '@clerk/react';
+import UsersInfoCard from "../components/UsersInfoCard";
 
 
 function SettingsPage() {
-
+ 
   const {userId} = useAuth();
 
   const { data: users, isLoading, error } = useUsers(); // Fetch all users for admin view
@@ -25,19 +26,8 @@ function SettingsPage() {
   return (
     <div>
       <h1>Settings Page for {currentUser?.name}</h1>
-
-      <h2>All Users:</h2>
-      <ul>
-        {users && users.length > 0 ? (
-          users.map((user) => (
-            <li key={user.id}>
-              {user.name} ({user.email}) - Role: {user.role}
-            </li>
-          ))
-        ) : (
-          <li>No users found.</li>
-        )}
-      </ul>
+      
+        <UsersInfoCard />
     </div>
   );
 }

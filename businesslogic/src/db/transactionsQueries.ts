@@ -2,7 +2,7 @@ import { db } from ".";
 import { and, eq, gte, lte } from "drizzle-orm";
 import { transactions, type NewTransaction } from "./schema";
 
-// Transaction queries
+
 export const createTransaction = async (transaction: NewTransaction) => {
     const [newTransaction] = await db.insert(transactions).values(transaction).returning();
     return newTransaction;
@@ -19,10 +19,8 @@ export const getTransactionById = async (transactionId: string, userId: string) 
 };
 
 // Get all transactions for a user, optionally filtered by category and/or date range
-export const getTransactionsByUserId = async (
-    userId: string,
-    filters?: { categoryId?: string; from?: Date; to?: Date; }
-) => {
+export const getTransactionsByUserId = async ( userId: string, filters?: { categoryId?: string; from?: Date; to?: Date; }) => {
+    // Start with the base condition to filter by userId
     const conditions = [eq(transactions.userId, userId)];
 
     // This will chech the filters, if true then the values will be pushed into conditions above
@@ -49,7 +47,15 @@ export const updateTransaction = async (transactionId: string, userId: string, d
     if (!existingTransaction){
         throw new Error(`Transaction with id ${transactionId} not found for this user`)
     }
-    const [updatedTransaction] = await db.update(transactions).set({ ...data, updatedAt: new Date()}).where(eq(transactions.userId, userId)).returning();
+    const [updatedTransaction] = await db.update(transactions)
+    .set({ ...data, updatedAt: new Date()})
+    .where(
+        and(
+        eq(transactions.id, transactionId),
+        eq(transactions.userId, userId)
+    )
+)
+    .returning();
     return updatedTransaction;
 
 }
@@ -58,6 +64,9 @@ export const deleteTransaction = async (transactionId: string, userId: string) =
     const existingTransaction = await getTransactionById(transactionId, userId)
     if (!existingTransaction){
         throw new Error(`Transaction with id ${transactionId} not found for this user`)
+    }
+    if (existingTransaction.userId !== userId){
+        throw new Error(`Unauthorized to delete this transaction`)
     }
     await db.delete(transactions).where(eq(transactions.id, transactionId));
     return existingTransaction;
