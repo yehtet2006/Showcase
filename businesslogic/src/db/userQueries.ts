@@ -26,6 +26,14 @@ export const updateUser = async (id: string, data:Partial<NewUser>) => {
 
 }
 
+export const deleteUser = async (id: string) => {
+    const existingUser = await getUserById(id);
+    if (!existingUser) {
+        throw new Error(`User with id ${id} not found`);
+    }
+    await db.delete(users).where(eq(users.id, id));
+};
+
 // Upsert user: if the user exists, update it; otherwise, create a new one
 export const upsertUser = async (user: NewUser) => {
     const existingUser = await getUserById(user.id);
@@ -35,11 +43,5 @@ export const upsertUser = async (user: NewUser) => {
     return createUser(user);
 };
 
-export const deleteUser = async (id: string) => {
-    const existingUser = await getUserById(id);
-    if (!existingUser) {
-        throw new Error(`User with id ${id} not found`);
-    }
-    await db.delete(users).where(eq(users.id, id));
-};
+
 

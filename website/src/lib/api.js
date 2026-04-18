@@ -24,6 +24,11 @@ export const getCurrentUser = async (id) => {
   return data.user;
 }
 
+export const updateUser = async (id, ...userData) => {
+  const { data } = await api.put(`/users/${id}`, userData);
+  return data;
+}
+
 //Transactions api
 
 //Transactions api

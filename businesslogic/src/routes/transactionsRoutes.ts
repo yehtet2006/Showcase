@@ -6,7 +6,7 @@ const router = Router();
 
 router.post("/", requireAuth(), transactionController.createTransaction);
 router.get("/", requireAuth(), transactionController.getTransactionsByUserId);
-router.get("/:id", requireAuth(), transactionController.getTransactionById);
-router.put("/:id", requireAuth(), transactionController.updateTransaction);
-router.delete("/:id", requireAuth(), transactionController.deleteTransaction);
+router.get("/:transactionId", requireAuth(), transactionController.getTransactionById);
+router.put("/:transactionId", requireAuth(), transactionController.updateTransaction);
+router.delete("/:transactionId", requireAuth(), transactionController.deleteTransaction);
 export default router;

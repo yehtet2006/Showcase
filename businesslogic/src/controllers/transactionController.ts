@@ -36,7 +36,7 @@ export async function createTransaction(req: Request, res: Response) {
             userId,
             categoryId: categoryId ?? null,
             name,
-            amount: String(amount),
+            amount: amount,
             type,
             description: description ?? null,
             date: parsedDate,
@@ -79,7 +79,7 @@ export async function getTransactionsByUserId(req: Request, res: Response) {
         }
 
         const transactions = await transactionQueries.getTransactionsByUserId(userId, filters);
-        res.status(200).json({ transactions });
+        res.status(200).json({transactions});
 
     } catch (error) {
         console.log("Error getting transactions:", error);
@@ -160,7 +160,7 @@ export async function updateTransaction(req: Request, res: Response) {
         const updatedTransaction = await transactionQueries.updateTransaction(transactionId, userId, {
             ...(categoryId !== undefined && { categoryId }),
             ...(name && { name }),
-            ...(amount !== undefined && { amount: String(amount) }),
+            ...(amount !== undefined && { amount }),
             ...(type && { type }),
             ...(description !== undefined && { description }),
             ...(parsedDate && { date: parsedDate }),
