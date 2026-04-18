@@ -58,13 +58,15 @@ Binnen dit project wordt de Gitflow workflow gebruikt:
 
 In dit project zijn beveiligingsmaatregelen genomen op basis van het threat model.
 
-### Bedreiging #1: Cross-Site Request Forgery (CSRF)
+### Threat #20: Spoofing the Admin/User External Entity
 
-- **Risico:** Kwaadwillende requests kunnen namens een gebruiker uitgevoerd worden  
-- **Mitigatie:** CSRF-tokens toegevoegd aan POST-requests  
-- **Implementatie:**  
-  - Bestand: `middleware/csrf.ts`  
-  - Oplossing: Validatie van CSRF-token bij elke POST-request  
+- **Risk:** Admin/User may be spoofed by an attacker, and this may lead to unauthorized access to SPA (React.js). Consider using a standard authentication mechanism to identify the external entity.
+- **Mitigatiion:** Authentication via an extern provider with bearer tokens  
+- **Implementation:**  
+  - File Frontend: `website\src\hooks\useAuthReq.js`  
+  - File Backend: `Almost all routes are authentication dependent.`
+  - Example: see `businesslogic\src\routes\transactionsRoutes.ts line: 7`
+  - Solution: Authentication must be enforced via a trusted method (e.g., external auth provider and tokens). Without proper verification, attackers can impersonate legitimate users and gain access to sensitive data. 
 
 ---
 
