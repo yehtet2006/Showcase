@@ -19,15 +19,17 @@ export const getUsers = async () => {
   return data.users;
 }
 
+// get user by id
 export const getCurrentUser = async (id) => {
   const { data } = await api.get(`/users/${id}`);
   return data.user;
 }
 
-export const updateUser = async (id, ...userData) => {
+export const updateUser = async (payload) => {
+  const { id, ...userData } = payload;
   const { data } = await api.put(`/users/${id}`, userData);
   return data;
-}
+};
 
 //Transactions api
 

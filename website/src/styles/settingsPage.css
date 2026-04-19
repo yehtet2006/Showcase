@@ -1,0 +1,121 @@
+.text {
+    margin-bottom: 1rem;
+}
+
+.user-list-container {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0;
+}
+
+/* Shared grid layout for header + rows */
+.header,
+.user-list {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr 1fr; /* Name | Email | Role | Actions */
+  align-items: center;
+  gap: 1rem;
+}
+
+
+/* Header styling */
+.header {
+  background-color: var(--secondary-text-color);
+  padding: 1rem;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+/* Row styling */
+.user-list {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--income-color, #0582CA);
+  background: rgba(5, 25, 35, 0.80);
+}
+
+/* Role badge (shared base) */
+.role {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  width: fit-content;
+}
+
+/* Variants */
+.role.user {
+  border: 1px solid var(--income-color);
+  color: var(--income-color);
+  background: var(--background-color);
+}
+
+.role.admin {
+  border: 1px solid var(--green-color);
+  color: var(--green-color);
+  background: var(--background-color);
+}
+
+/* Button */
+.edit-btn {
+  background: var(--background-color);
+  border: 1px solid var(--income-color);
+  border-radius: 8px;
+  cursor: pointer;
+  width: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-btn svg {
+  fill: none;
+  stroke: var(--background-color);
+}
+
+@media (max-width: 768px) {
+  .header,
+  .user-list {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "name role"
+      "email actions";
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+}
+
+.modal {
+  background: var(--background-color);
+  padding: 2rem;
+  border-radius: 16px;
+  min-width: 300px;
+  max-width: 400px;
+  color: var(--text-color);
+}
+
+.modal button {
+  margin-top: 1rem;
+  background: var(--primary-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
