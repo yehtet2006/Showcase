@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { getUsers, getCurrentUser, updateUser } from "../lib/api";
 
@@ -15,16 +15,36 @@ export const useUser = (id) => {
   });
 };
 
-export const useUpdateUser = () => {
+// export const useUpdateUser = () => {
+//   return useMutation({
+//     mutationFn: updateUser,
+//   })
+// }
+
+export function useUpdateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateUser,
+    mutationFn: updateUser, 
 
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      queryClient.invalidateQueries({ queryKey: ["user", variables.id] });
-      queryClient.invalidateQueries({ queryKey: ["myUser"] });
+    onSuccess: () => {
+
+      queryClient.invalidateQueries(['users']);
+      queryClient.invalidateQueries(['user']);
+      // queryClient.invalidateQueries(['user', selectedUserId]);
     }
-  })
+  });
 }
+// export const useUpdateUser = () => {
+//   const queryClient = useQueryClient();
+
+//   return useMutation({
+//     mutationFn: updateUser,
+
+//     onSuccess: (_, variables) => {
+//       queryClient.invalidateQueries({ queryKey: ["user"] });
+//       queryClient.invalidateQueries({ queryKey: ["user", variables.id] });
+//       queryClient.invalidateQueries({ queryKey: ["myUser"] });
+//     }
+//   })
+// }

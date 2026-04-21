@@ -17,8 +17,7 @@ Welkom bij het Financieel Dashboard project! Dit project is ontwikkeld als onder
 
 ## 👥 Contributor
 
-- Jouw Naam (vervang dit met je eigen naam)
-- Eventuele teamleden
+- Ye Htet Rohim
 
 ---
 
