@@ -93,12 +93,6 @@ export async function getUser(req: Request, res: Response){
         }
 
         const { id } = req.params;
-        const cuurentUser = await userQueries.getUserById(userId);
-        if (!cuurentUser || cuurentUser.role.toLocaleLowerCase() !== "admin"){
-            return res.status(403).json({ error: "Forbidden"})
-        }
-
-
         const user = await userQueries.getUserById(String(id));
         if (!user) {
             res.status(404).json({ error: "User not found" });
