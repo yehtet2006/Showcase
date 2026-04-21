@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router'
 import './index.css'
 import Navbar from './components/Navbar'
 import SignInPage from './pages/SignInPage'
-import SignUpPage from './pages/SignUpPage'
 import DashboardPage from './pages/DashboardPage'
 import TransactionsPage from './pages/TransactionsPage'
 import AnalyticsPage from './pages/AnalyticsPage'
@@ -32,9 +31,8 @@ function App() {
       {isSignedIn && <Navbar />}
       <main>
         <Routes>
-          <Route path='/' element={!isSignedIn && <SignInPage />} />
-          <Route path='/signUp' element={!isSignedIn && <SignUpPage />} />
-          <Route path='/dashboard' element={isSignedIn && <DashboardPage />} />
+          <Route path="/"element={isSignedIn ? <DashboardPage /> : <SignInPage />} />
+          <Route path="/dashboard"element={isSignedIn ? <DashboardPage /> : <SignInPage />} />
           <Route path='/transactions' element={isSignedIn && <TransactionsPage />} />
           <Route path='/analytics' element={isSignedIn && <AnalyticsPage />} />
           <Route path='/profile' element={isSignedIn && <ProfilePage />} />

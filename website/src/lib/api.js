@@ -1,14 +1,6 @@
 import api from "./axios";
 
-//Users api
-// export const syncUser = async (userData) => {
-//     if (!userData?.email || !userData?.name) {
-//         throw new Error("syncUser requires both email and name"); 
-//     }
-//   const { data } = await api.post("/users/sync", userData);
-//   return data;
-// };
-
+// Users api
 export const syncUser = async () => {
   const { data } = await api.post("/users/sync");
   return data;
@@ -32,6 +24,7 @@ export const updateUser = async (payload) => {
 };
 
 //Transactions api
+
 
 //Transactions api
 
