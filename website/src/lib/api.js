@@ -30,7 +30,7 @@ export const addTransaction = async (transactionData) => {
 }
 export const getTransactions = async () => {
   const { data } = await api.get("/transactions"); 
-  return data;
+  return data.transactions;
 }
 export const getTransactionById = async (transactionId) => {
   const { data } = await api.get(`/transactions/${transactionId}`);
