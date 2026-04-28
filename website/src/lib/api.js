@@ -24,7 +24,26 @@ export const updateUser = async (payload) => {
 };
 
 //Transactions api
-
+export const addTransaction = async (transactionData) => {
+  const { data } = await api.post("/transactions", transactionData);
+  return data; 
+}
+export const getTransactions = async () => {
+  const { data } = await api.get("/transactions"); 
+  return data;
+}
+export const getTransactionById = async (transactionId) => {
+  const { data } = await api.get(`/transactions/${transactionId}`);
+  return data;
+};
+export const updateTransaction = async (transactionId, transactionData) => {
+  const { data } = await api.put(`/transactions/${transactionId}`, transactionData);
+  return data;
+};;
+export const deleteTransaction = async (transactionId) => {
+  const { data } = await api.delete(`/transactions/${transactionId}`);
+  return data;
+};
 
 //Transactions api
 
