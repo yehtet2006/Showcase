@@ -44,7 +44,12 @@ export const deleteTransaction = async (transactionId) => {
   const { data } = await api.delete(`/transactions/${transactionId}`);
   return data;
 };
-
-//Transactions api
-
 //Categories api
+export const getCategories = async () => {
+  const { data } = await api.get("/categories");
+  return data.categories;
+}
+export const addCategory = async (categoryData) => {
+  const { data } = await api.post("/categories", categoryData);
+  return data;
+}
