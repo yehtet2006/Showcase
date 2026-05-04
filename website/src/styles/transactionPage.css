@@ -110,11 +110,24 @@
 
 .transaction-list li {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 150px 250px 120px 140px 180px 80px;
+  gap: 1em;
   padding: 1rem;
   border-bottom: 1px solid #1e3a4c;
   align-items: center;
   transition: 0.2s;
+}
+
+.transaction-header {
+  display: grid;
+  grid-template-columns: 150px 250px 120px 140px 180px 80px;
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  color: #b2c8d4;
+  border-bottom: 2px solid #1e3a4c;
+  background: rgba(255,255,255,0.02);
 }
 
 .transaction-list li:hover {
@@ -128,12 +141,12 @@
 
 /* Income (optional if you add class later) */
 .income {
-  color: #4cd964;
+  color: var(--green-color);
 }
 
 /* Expense */
 .expense {
-  color: #ff6b6b;
+  color: var(--expense-color);
 }
 
 /* Empty state */
@@ -146,4 +159,34 @@
     height: 20px;
     border-radius: 200px;
     display: inline-block;
+}
+
+.transaction-list li span {
+  overflow: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  scrollbar-width: none;
+}
+
+.transaction-list {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.transaction-header span {
+  opacity: 0.8;
+}
+
+.transaction-list li:not(.transaction-header):hover {
+  cursor: pointer;
+}
+
+.transaction-list li span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.transaction-list li:hover {
+  background: rgba(255,255,255,0.04);
 }

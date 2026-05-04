@@ -2,6 +2,7 @@
 :root{
   --primary-color: #00A6FB;
   --income-color: #0582CA;
+  --expense-color: #FF6B6B;
   --background-color: #051923;
   --text-color: #F7EDE2;
   --line-color: var(--text-color);
