@@ -12,7 +12,8 @@ import { use } from "react";
 export const useTransactions = () => {
     const result = useQuery({
         queryKey: ["transactions"],
-        queryFn: getTransactions
+        queryFn: getTransactions,
+    
     })
     return result;
 };
@@ -31,24 +32,23 @@ export const useTransaction = (transactionId) => {
 };
 
 export const useDeleteTransaction = () => {
-    const queryClient = useQueryClient(); // Get the query client instance
+    const queryClient = useQueryClient();
     return useMutation({
         mutationFn: deleteTransaction,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["transaction"] }); // Invalidate the transactions query to refetch the updated list
+            queryClient.invalidateQueries({ queryKey: ["transactions"] }); // was "transaction"
         }
     })
 }
 
 export const useUpdateTransaction = () => {
-    const queryClient = useQueryClient(); // Get the query client instance
+    const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: updateTransaction,
+        mutationFn: ({ id, ...transactionData }) => updateTransaction(id, transactionData), // unwrap here
         onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({ queryKey: ["transactions"] }); // Invalidate the transactions query to refetch the updated list
-            queryClient.invalidateQueries({ queryKey: ["transaction", variables.transactionId] }); // Invalidate the specific transaction query to refetch the updated transaction details
-
+            queryClient.invalidateQueries({ queryKey: ["transactions"] });
+            queryClient.invalidateQueries({ queryKey: ["transaction", variables.id] }); // also fix: was variables.transactionId, should be variables.id
         }
     })
 }

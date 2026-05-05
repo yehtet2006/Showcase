@@ -1,12 +1,21 @@
 import { useState, useEffect } from "react"
 import { useParams, useNavigate, Link } from 'react-router';
+import { useCategories } from "../hooks/useCategories";
+import { useDeleteTransaction } from "../hooks/useTransactions";
+import { useQueryClient } from "@tanstack/react-query";
 
-function SelectedTransactionForm({transaction, isPending, isError, onSubmit}) {
+function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onClose}) {
+    const { data: categories} = useCategories();
+    const deleteTransactionMutation = useDeleteTransaction();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         name: transaction?.name || '',
         description: transaction?.description || '',
         amount: transaction?.amount || '',
-        date: transaction?.date || '',
+        date: transaction?.date ? new Date(transaction.date).toISOString().split('T')[0] : '',
+        categoryId : transaction?.categoryId || '',
+        type: transaction?.type || '',
     });
 
     useEffect(() => {
@@ -14,14 +23,16 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit}) {
             name: transaction?.name || '',
             description: transaction?.description || '',
             amount: transaction?.amount || '',
-            date: transaction?.date || '',
+            date: transaction?.date ? new Date(transaction.date).toISOString().split('T')[0] : '',
+            categoryId: transaction?.categoryId || '',
+            type: transaction?.type || '',
         });
     }, [transaction]);
 
   return (
     <div className="modal-overlay">
         <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <Link className="back" to="/transactions" onClick={() => setSelectedTransactionId(undefined)}>Back</Link>
+        <Link className="back" to="/transactions" onClick={onClose}>Back</Link>
 
         <h2>Transaction Details</h2>
         <form onSubmit={(e) => {
@@ -44,9 +55,38 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit}) {
                 <label>Date:</label>
                 <input type="date" placeholder="Date" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} required />
             </div>
+            <div className="form-group-select">
+                <label>Category:</label>
+                <select value={formData.categoryId} onChange={(e) => setFormData({...formData, categoryId: e.target.value})} required>
+                    <option value="">Select a category</option>
+                    {categories && categories.map(category => (
+                        <option key={category.id} value={category.id}>{category.name}</option>
+                    ))}
+                </select>
+            </div>
+            <div className="form-group-select">
+                <label>Type:</label>
+                <select value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})} required>
+                    <option value="">Select a type</option>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+            </div>
             {isError && <p className="error">Error updating transaction. Please try again.</p>}
             <button type="submit" disabled={isPending}>
                 {isPending ? 'Updating...' : 'Update Transaction'}
+            </button>
+            <button type="button" id="dlt-btn" onClick={() => {
+                if (window.confirm('Are you sure you want to delete this transaction?')) {
+                    deleteTransactionMutation.mutate(transaction.id, {  // transaction.id not selectedTransaction.id
+                        onSuccess: () => {
+                            onClose();
+                            navigate('/transactions');
+                        }
+                    });
+                }
+            }}>
+                Delete
             </button>
         </form>
         </div>
