@@ -32,7 +32,7 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
   return (
     <div className="modal-overlay">
         <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <Link className="back" to="/transactions" onClick={onClose}>Back</Link>
+        <Link className="back" to="/transactions/all" onClick={onClose}>Back</Link>
 
         <h2>Transaction Details</h2>
         <form onSubmit={(e) => {
@@ -81,7 +81,7 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
                     deleteTransactionMutation.mutate(transaction.id, {  // transaction.id not selectedTransaction.id
                         onSuccess: () => {
                             onClose();
-                            navigate('/transactions');
+                            navigate('/transactions/all');
                         }
                     });
                 }

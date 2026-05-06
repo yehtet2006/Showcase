@@ -1,4 +1,6 @@
-/* General layout */
+/* =========================
+   BASE LAYOUT
+========================= */
 .main-container {
   display: flex;
   gap: 2rem;
@@ -9,7 +11,9 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* LEFT: Form */
+/* =========================
+   LEFT: FORM
+========================= */
 .add-transaction-container {
   flex: 1;
   background: #0f2533;
@@ -43,7 +47,6 @@
   background: #132f40;
   color: white;
   outline: none;
-  transition: 0.2s;
 }
 
 .transaction-form input:focus,
@@ -60,10 +63,8 @@
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
-  transition: 0.2s;
 }
 
-/* Add button */
 .transaction-form button[type="submit"] {
   background: #4ea1ff;
   color: white;
@@ -73,13 +74,12 @@
   background: #3b8ae0;
 }
 
-/* Reset button */
-.transaction-form button[type="button"] {
+.transaction-form .reset {
   background: #8b1e1e;
   color: white;
 }
 
-.transaction-form button[type="button"]:hover {
+.transaction-form .reset:hover {
   background: #6f1717;
 }
 
@@ -92,13 +92,38 @@
   background: none;
 }
 
-/* RIGHT: Transactions list */
+/* =========================
+   RIGHT: TRANSACTIONS LIST
+========================= */
+.top-row-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.all-transactions-link {
+  font-size: 0.9rem;
+  color: #4ea1ff;
+  text-decoration: none;
+}
+
+
 .all-transactions-container {
   flex: 2;
   background: #0f2533;
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+/* Header (desktop only) */
+.transaction-header {
+  display: grid;
+  grid-template-columns: 150px 250px 120px 140px 180px 80px;
+  padding: 1rem;
+  font-weight: 600;
+  color: #b2c8d4;
+  border-bottom: 2px solid #1e3a4c;
 }
 
 /* List */
@@ -111,82 +136,208 @@
 .transaction-list li {
   display: grid;
   grid-template-columns: 150px 250px 120px 140px 180px 80px;
-  gap: 1em;
+  gap: 1rem;
   padding: 1rem;
   border-bottom: 1px solid #1e3a4c;
   align-items: center;
   transition: 0.2s;
 }
 
-.transaction-header {
-  display: grid;
-  grid-template-columns: 150px 250px 120px 140px 180px 80px;
-  padding: 1rem;
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.05em;
-  color: #b2c8d4;
-  border-bottom: 2px solid #1e3a4c;
-  background: rgba(255,255,255,0.02);
-}
-
 .transaction-list li:hover {
-  background: rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.04);
 }
 
-/* Amount colors */
-.transaction-list li span:nth-child(3) {
-  font-weight: bold;
+/* Text handling */
+.transaction-list li span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-/* Income (optional if you add class later) */
+/* Colors */
 .income {
   color: var(--green-color);
 }
 
-/* Expense */
 .expense {
   color: var(--expense-color);
 }
 
-/* Empty state */
-.all-transactions-container p {
-  opacity: 0.7;
+/* Category color dot */
+.color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
-.color{
-    width: 20px;
-    height: 20px;
-    border-radius: 200px;
-    display: inline-block;
+/* Add category section */
+.add-category-container {
+   display: flex;
+    gap: 0.5rem;
 }
-
-.transaction-list li span {
-  overflow: auto;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  scrollbar-width: none;
+.category-input {
+  flex: 1;
 }
-
-.transaction-list {
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.transaction-header span {
-  opacity: 0.8;
-}
-
-.transaction-list li:not(.transaction-header):hover {
+.add-category-container button {  
+  padding: 0.7rem 1rem;
+  background: #4ea1ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-.transaction-list li span {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  /* STACK layout */
+  .main-container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .add-transaction-container {
+    order: 1;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .all-transactions-container {
+    order: 2;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  /* Hide header */
+  .transaction-header {
+    display: none;
+  }
+
+  /* CARD layout */
+  .transaction-list .transaction-list-items {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto auto;
+    gap: 0.4em;
+    padding: 1rem;
+    border-radius: 12px;
+    background: var(--background-color);
+    margin-bottom: 0.8rem;
+    border: 2px solid var(--income-color);
+
+  }
+
+  /* Description (top left) */
+  .transaction-list .transaction-list-items span:nth-child(2) {
+    grid-column: 1;
+    grid-row: 1;
+    font-weight: 500;
+  }
+
+  /* Name (under description) */
+  .transaction-list .transaction-list-items span:nth-child(1) {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+
+  /* Amount (top right) */
+  .transaction-list .transaction-list-items span:nth-child(3) {
+    grid-column: 2;
+    grid-row: 1;
+    font-weight: bold;
+    text-align: right;
+    font-size: 1.1rem;
+  }
+
+  /* Date */
+  .transaction-list .transaction-list-items span:nth-child(4) {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    text-align: right;
+  }
+
+  /* Category */
+  .transaction-list .transaction-list-items span:nth-child(5) {
+    grid-column: 1;
+    grid-row: 3;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+  }
+
+  /* Edit button (bottom right) */
+  .transaction-list .transaction-list-items button {
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: end;
+    align-self: center;
+  }
+
+  /* Tap feedback */
+  .transaction-list .transaction-list-items {
+    transition: transform 0.15s ease;
+  }
+
+  .transaction-list .transaction-list-items:active {
+    transform: scale(0.98);
+  }
+
+  /* Prevent overlap with bottom navbar */
+  main {
+    padding-bottom: 90px;
+  }
+
+  .color {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+  .add-category-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  /* Input takes full row */
+  .category-input {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  /* Color picker */
+  .add-category-container input[type="color"] {
+    max-width: 50%;
+    min-width: none;
+    height: 40px;
+  }
+
+  /* Button */
+  .add-category-container button {
+    width: 100%;
+  }
 }
 
-.transaction-list li:hover {
-  background: rgba(255,255,255,0.04);
 }
+
+
+.add-category-container input[type="text"] {
+  flex: 2;
+}
+
+/* .add-category-container input[type="color"] {
+  width: 50px;
+  flex: none;
+} */

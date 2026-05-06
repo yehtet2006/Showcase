@@ -30,11 +30,6 @@ function TransactionsPage() {
   });
   const { data: categories } = useCategories();
   const { data: transactions, isLoading, error } = useTransactions();
-  
-  // For editing transaction
-  const [selectedTransaction, setSelectedTransaction] = useState(null);
-const updateTransactionMutation = useUpdateTransaction();
-  
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -88,6 +83,7 @@ const updateTransactionMutation = useUpdateTransaction();
     <div className='main-container'>
       <div className='add-transaction-container'>
         <h1>Add Transaction</h1>
+        
         <form onSubmit={handleSubmit} className='transaction-form'>
           <label>Name:</label>
           <input type="text" name="name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
@@ -121,8 +117,9 @@ const updateTransactionMutation = useUpdateTransaction();
           </select>
 
           {/* Add new category */}
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div className='add-category-container'>
             <input
+              className='category-input'
               type="text"
               placeholder="New category"
               value={newCategory.name}
@@ -138,7 +135,7 @@ const updateTransactionMutation = useUpdateTransaction();
             </button>
           </div>
           <button type="submit">Toevoegen</button>
-          <button type="button" onClick={() => setFormData({
+          <button className='reset' type="button" onClick={() => setFormData({
             name: '',
             amount: '',
             type: '',
@@ -151,18 +148,21 @@ const updateTransactionMutation = useUpdateTransaction();
         </form>
       </div>
       <div className='all-transactions-container'>
-        <ul className='transaction-list'>
-          <li className="transaction-header">
+        <div className='top-row-filter'>
+          <span>Recente Transacties</span> <br />
+          <Link className='all-transactions-link' to="/transactions/all">Bekijk alle transacties</Link>
+        </div>
+        <li className="transaction-header">
             <span><h3>Name</h3></span>
             <span><h3>Description</h3></span>
             <span><h3>Amount</h3></span>
             <span><h3>Date</h3></span>
             <span><h3>Category</h3></span>
-            <span><h3>Actions</h3></span>
           </li>
+        <ul className='transaction-list'>
           {transactions && transactions.length > 0 ? (
           transactions.map((transaction) => (
-            <li key={transaction.id}>
+            <li className='transaction-list-items' key={transaction.id}>
               <span>{transaction.name}</span>
               <span>{transaction.description}</span>
               <span className={transaction.type === "income" ? "income" : "expense"}>
@@ -180,12 +180,6 @@ const updateTransactionMutation = useUpdateTransaction();
                 >
                 </span>
               )}</span>
-              <button className='edit-btn' onClick={() => setSelectedTransaction(transaction)}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 20H21" stroke="#00A6FB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M16.5 3.50001C16.8978 3.10219 17.4374 2.87869 18 2.87869C18.2786 2.87869 18.5544 2.93356 18.8118 3.04017C19.0692 3.14677 19.303 3.30303 19.5 3.50001C19.697 3.697 19.8532 3.93085 19.9598 4.18822C20.0665 4.44559 20.1213 4.72144 20.1213 5.00001C20.1213 5.27859 20.0665 5.55444 19.9598 5.81181C19.8532 6.06918 19.697 6.30303 19.5 6.50001L7 19L3 20L4 16L16.5 3.50001Z" stroke="#00A6FB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
             </li>
           ))
         ) : (
@@ -193,24 +187,6 @@ const updateTransactionMutation = useUpdateTransaction();
         )}
         </ul>
       </div>
-      {selectedTransaction && (
-        <SelectedTransactionForm 
-          transaction={selectedTransaction}
-          isPending={updateTransactionMutation.isPending}
-          isError={updateTransactionMutation.isError}
-          onClose={() => setSelectedTransaction(null)}
-          onSubmit={(formData) => {
-            updateTransactionMutation.mutate({ id: selectedTransaction.id, ...formData }, {
-              onSuccess: (updatedTransaction) => {
-                setSelectedTransaction(null); // was setSelectedTransactionId(null)
-                queryClient.invalidateQueries(['transactions']);
-                queryClient.invalidateQueries(['transactions', updatedTransaction.id]);
-                navigate('/transactions');
-              }
-            })
-          }}
-        /> 
-      )}
     </div>
   )
 }
