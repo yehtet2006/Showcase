@@ -7,6 +7,7 @@ import TransactionsPage from './pages/TransactionsPage'
 import AnalyticsPage from './pages/AnalyticsPage'
 import ProfilePage from './pages/ProfilePage'
 import SettingsPage from './pages/SettingsPage'
+import AllTransactionsPage from './pages/AllTransactionsPage'
 import useAuthReq from './hooks/useAuthReq'
 import useUserSync from './hooks/useUserSync'
 import { useUser } from './hooks/useUsers'
@@ -29,11 +30,12 @@ function App() {
   return (
     <>
       {isSignedIn && <Navbar />}
-      <main>
+      <main className='all-content-container'>
         <Routes>
           <Route path="/"element={isSignedIn ? <DashboardPage /> : <SignInPage />} />
           <Route path="/dashboard"element={isSignedIn ? <DashboardPage /> : <SignInPage />} />
-          <Route path='/transactions' element={isSignedIn && <TransactionsPage />} />
+          <Route path='/transactions/add' element={isSignedIn && <TransactionsPage />} />
+          <Route path='/transactions' element={isSignedIn && <AllTransactionsPage />} />
           <Route path='/analytics' element={isSignedIn && <AnalyticsPage />} />
           <Route path='/profile' element={isSignedIn && <ProfilePage />} />
           <Route path='/settings' element={currentUser?.role === "admin" && isSignedIn && <SettingsPage />} />

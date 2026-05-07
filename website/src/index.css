@@ -1,7 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Manrope:200,300,regular,500,600,700,800);
+
 :root{
   --primary-color: #00A6FB;
   --income-color: #0582CA;
+  --expense-color: #FF6B6B;
   --background-color: #051923;
   --text-color: #F7EDE2;
   --line-color: var(--text-color);
@@ -9,12 +11,7 @@
   --green-color: rgb(75, 198, 75);
 }
 
-#root {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  min-height: 100vh;
-}
-
+/* Reset */
 *{
   margin: 0;
   padding: 0;
@@ -25,19 +22,37 @@ html {
   font-family: 'Manrope', sans-serif;
   line-height: 1.5rem;
 }
+
 body {
   min-height: 100vh;
-  min-height: 100dvh;
   background-color: var(--background-color);
   color: var(--text-color);
 }
-/* Sidebar base */
+
+/* Layout */
+#root {
+  display: block;
+}
+
+/* =========================
+   SIDEBAR (DESKTOP DEFAULT)
+========================= */
 .sidebar {
   width: 250px;
   height: 100vh;
   padding: 1rem;
   border-right: 1px solid var(--line-color);
   transition: width 0.3s ease;
+  background: var(--background-color);
+}
+
+/* Fixed on desktop */
+@media (min-width: 769px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
 }
 
 /* Collapsed */
@@ -45,7 +60,7 @@ body {
   width: 80px;
 }
 
-/* Layout */
+/* Sidebar list */
 .sidebar ul {
   list-style: none;
   display: flex;
@@ -54,7 +69,7 @@ body {
 }
 
 /* Top section */
-.top {
+nav li:first-child {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -70,52 +85,128 @@ body {
   border-radius: 8px;
   text-decoration: none;
   color: var(--text-color);
-  transition: all ease-in-out 0.2s;
+  transition: all 0.2s ease-in-out;
 }
 
 .nav-link:hover {
   background: var(--secondary-text-color);
 }
 
-/* Active link */
+/* Active */
 .nav-link.active {
-  border: var(--primary-color);
-  color: var(--text-color)
+  border: 1px solid var(--line-color);
 }
 
-/* Hide text when collapsed */
-.sidebar.collapsed .nav-link span:last-child {
+/* Collapse behavior */
+.sidebar.collapsed .nav-link span {
   display: none;
 }
 
-/* Center icons when collapsed */
-.sidebar.collapsed .nav-link{
+.sidebar.collapsed .nav-link {
   justify-content: center;
 }
 
-/* Optional: hide logo text */
 .sidebar.collapsed .logo {
   display: none;
 }
 
-main {
-  padding: 2rem;
-}
-.nav-link.active {
-  border: var(--line-color) 1px solid;
-  color: var(--text-color);
-}
-
+/* Button */
 #collapse-btn {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0.25rem;
 }
-nav li:first-child {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+
+/* Main content spacing */
+@media (min-width: 769px) {
+  main {
+    margin-left: 250px;
+    padding: 2rem;
+  }
+
+  /* Adjust when collapsed */
+  .sidebar.collapsed ~ main {
+    margin-left: 80px;
+  }
 }
 
+/* =========================
+   MOBILE (BOTTOM NAVBAR)
+========================= */
+@media (max-width: 768px) {
+
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    padding: 0;
+    border-right: none;
+    border-top: 1px solid var(--line-color);
+    z-index: 1000;
+  }
+
+  /* Horizontal layout */
+  .sidebar ul {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+  }
+
+  /* Hide logo + collapse */
+  .sidebar li:first-child {
+    display: none;
+  }
+
+  /* Nav items */
+  .nav-link {
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+    font-size: 0.7rem;
+    padding: 0.25rem;
+  }
+
+  /* Icon size */
+  .nav-link svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Optional: show labels */
+  .nav-link span {
+    display: block;
+  }
+
+  /* Disable collapse on mobile */
+  .sidebar.collapsed {
+    width: 100%;
+  }
+
+  /* Prevent content hidden behind navbar */
+  main {
+    padding: 1rem;
+    padding-bottom: 90px;
+  }
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  /* color: var(--text-color); */
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.back:hover {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}

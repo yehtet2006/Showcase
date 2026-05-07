@@ -25,7 +25,7 @@ export const transactions = pgTable("transactions", {
     userId: text("user_id").notNull().references(() => users.id, { onDelete: "cascade" }), // Foreign key referencing users table
     categoryId: uuid("category_id").references(() => categories.id, { onDelete: "set null" }), // Foreign key referencing categories table
     name: varchar("name").notNull(),
-    amount: numeric({ precision: 100, scale: 20 }).notNull(), // example: 12345678901234567890.12345678901234567890
+    amount: numeric({ precision: 10, scale: 2 }).notNull(), // example: 12345678901234567890.12345678901234567890
     type: transactionTypesEnum("type").notNull(),
     description: text("description"),
     date: timestamp("date", { mode: "date" }).notNull(), // example: 2023-01-01, 
