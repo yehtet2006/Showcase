@@ -1,23 +1,31 @@
 @import url(https://fonts.googleapis.com/css?family=Manrope:200,300,regular,500,600,700,800);
 
-:root{
-  --primary-color: #00A6FB;
-  --income-color: #0582CA;
-  --expense-color: #FF6B6B;
-  --background-color: #051923;
-  --text-color: #F7EDE2;
-  --line-color: var(--text-color);
-  --secondary-text-color: #0C354A; 
-  --green-color: rgb(75, 198, 75);
+/* ============================================================
+   CUSTOM PROPERTIES
+============================================================ */
+:root {
+  --primary-color:        #00A6FB;
+  --income-color:         #0582CA;
+  --expense-color:        #FF6B6B;
+  --background-color:     #051923;
+  --text-color:           #F7EDE2;
+  --line-color:           var(--text-color);
+  --secondary-text-color: #0C354A;
+  --green-color:          rgb(75, 198, 75);
 }
 
-/* Reset */
-*{
+/* ============================================================
+   RESET
+============================================================ */
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ============================================================
+   BASE
+============================================================ */
 html {
   font-family: 'Manrope', sans-serif;
   line-height: 1.5rem;
@@ -29,38 +37,55 @@ body {
   color: var(--text-color);
 }
 
-/* Layout */
 #root {
   display: block;
 }
 
-/* =========================
-   SIDEBAR (DESKTOP DEFAULT)
-========================= */
+/* ============================================================
+   SIDEBAR — DESKTOP
+============================================================ */
 .sidebar {
   width: 250px;
   height: 100vh;
   padding: 1rem;
+  background: var(--background-color);
   border-right: 1px solid var(--line-color);
   transition: width 0.3s ease;
-  background: var(--background-color);
 }
 
-/* Fixed on desktop */
 @media (min-width: 769px) {
   .sidebar {
     position: fixed;
     top: 0;
     left: 0;
   }
+
+  main {
+    margin-left: 250px;
+    padding: 2rem;
+  }
+
+  .sidebar.collapsed ~ main {
+    margin-left: 80px;
+  }
 }
 
-/* Collapsed */
 .sidebar.collapsed {
   width: 80px;
 }
 
-/* Sidebar list */
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+}
+
+.sidebar.collapsed .nav-link span,
+.sidebar.collapsed .logo {
+  display: none;
+}
+
+/* ============================================================
+   SIDEBAR — NAV
+============================================================ */
 .sidebar ul {
   list-style: none;
   display: flex;
@@ -68,7 +93,6 @@ body {
   gap: 0.5rem;
 }
 
-/* Top section */
 nav li:first-child {
   display: flex;
   justify-content: space-between;
@@ -76,41 +100,20 @@ nav li:first-child {
   margin-bottom: 2rem;
 }
 
-/* Links */
 .nav-link {
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 0.75rem;
   border-radius: 8px;
-  text-decoration: none;
   color: var(--text-color);
+  text-decoration: none;
   transition: all 0.2s ease-in-out;
 }
 
-.nav-link:hover {
-  background: var(--secondary-text-color);
-}
+.nav-link:hover  { background: var(--secondary-text-color); }
+.nav-link.active { border: 1px solid var(--line-color); }
 
-/* Active */
-.nav-link.active {
-  border: 1px solid var(--line-color);
-}
-
-/* Collapse behavior */
-.sidebar.collapsed .nav-link span {
-  display: none;
-}
-
-.sidebar.collapsed .nav-link {
-  justify-content: center;
-}
-
-.sidebar.collapsed .logo {
-  display: none;
-}
-
-/* Button */
 #collapse-btn {
   background: none;
   border: none;
@@ -118,37 +121,22 @@ nav li:first-child {
   padding: 0.25rem;
 }
 
-/* Main content spacing */
-@media (min-width: 769px) {
-  main {
-    margin-left: 250px;
-    padding: 2rem;
-  }
-
-  /* Adjust when collapsed */
-  .sidebar.collapsed ~ main {
-    margin-left: 80px;
-  }
-}
-
-/* =========================
-   MOBILE (BOTTOM NAVBAR)
-========================= */
+/* ============================================================
+   SIDEBAR — MOBILE (BOTTOM NAVBAR)
+============================================================ */
 @media (max-width: 768px) {
-
   .sidebar {
     position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 1000;
     width: 100%;
     height: 70px;
     padding: 0;
     border-right: none;
     border-top: 1px solid var(--line-color);
-    z-index: 1000;
   }
 
-  /* Horizontal layout */
   .sidebar ul {
     flex-direction: row;
     justify-content: space-around;
@@ -156,57 +144,47 @@ nav li:first-child {
     height: 100%;
   }
 
-  /* Hide logo + collapse */
-  .sidebar li:first-child {
-    display: none;
-  }
+  .sidebar li:first-child { display: none; }
+  .sidebar.collapsed       { width: 100%; }
 
-  /* Nav items */
   .nav-link {
     flex-direction: column;
     justify-content: center;
     gap: 0.25rem;
-    font-size: 0.7rem;
     padding: 0.25rem;
+    font-size: 0.7rem;
   }
 
-  /* Icon size */
   .nav-link svg {
     width: 20px;
     height: 20px;
   }
 
-  /* Optional: show labels */
-  .nav-link span {
-    display: block;
-  }
+  .nav-link span { display: block; }
 
-  /* Disable collapse on mobile */
-  .sidebar.collapsed {
-    width: 100%;
-  }
-
-  /* Prevent content hidden behind navbar */
   main {
     padding: 1rem;
     padding-bottom: 90px;
   }
 }
 
-.back {
-  display: inline-block;
-  margin-bottom: 1rem;
-  /* color: var(--text-color); */
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-.back:hover {
-  font-weight: 600;
-  color: var(--text-color);
-}
-
+/* ============================================================
+   UTILITIES
+============================================================ */
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--primary-color);
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.back:hover {
+  font-weight: 600;
+  color: var(--text-color);
 }

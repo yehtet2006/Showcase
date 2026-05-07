@@ -73,6 +73,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2em;
+    margin-bottom: 50px;
 }
 
 .amount-card {
@@ -100,4 +101,21 @@
     border-color: var(--green-color);
     background-color: #00FB4B62;
     box-shadow: 0 0 5px 4px rgba(0, 255, 76, 0.25);
+}
+
+.graph-chart, .pie-chart {
+    border: 3px solid #ddd;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    height: 700px;
+    width: 100%;
+}
+
+.recent-transactions-container{
+    border: 3px solid #ddd;
+    border-radius: 20px;
+    padding: 20px;
+    height: 400px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
