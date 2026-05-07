@@ -56,6 +56,14 @@ function TransactionsPage() {
         date: new Date(formData.date).toISOString(),
         categoryId: formData.categoryId || null,
       });
+      setFormData({
+            name: '',
+            amount: '',
+            type: '',
+            date: '',
+            description: '',
+            categoryId: ''
+          })
       queryClient.invalidateQueries(['transactions']);
     } catch (error) {
       console.error('Error adding transaction:', error);
@@ -89,12 +97,27 @@ function TransactionsPage() {
           <input type="text" name="name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
           <label>Amount:</label>
           <input type="number" name="amount" value={formData.amount} onChange={(e) => setFormData({...formData, amount: e.target.value})} />
+          
           <label>Type:</label>
-          <select name="type" value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})}>
-            <option value="">Selecteer de type</option>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
-          </select>
+
+          <div className="type-toggle">
+            <button
+              type="button"
+              className={formData.type === "income" ? "active income-btn" : ""}
+              onClick={() => setFormData({ ...formData, type: "income" })}
+            >
+              Income
+            </button>
+
+            <button
+              type="button"
+              className={formData.type === "expense" ? "active expense-btn" : ""}
+              onClick={() => setFormData({ ...formData, type: "expense" })}
+            >
+              Expense
+            </button>
+          </div>
+          
           <label>Date:</label>
           <input type="date" name="date" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} />
           <label>Description:</label>
@@ -134,7 +157,9 @@ function TransactionsPage() {
               Add
             </button>
           </div>
-          <button type="submit">Toevoegen</button>
+          <button type="submit" onClick={handleSubmit}>
+            Toevoegen
+          </button>
           <button className='reset' type="button" onClick={() => setFormData({
             name: '',
             amount: '',

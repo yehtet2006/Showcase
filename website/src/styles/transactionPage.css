@@ -157,10 +157,12 @@
 /* Colors */
 .income {
   color: var(--green-color);
+  font-weight: 600;
 }
 
 .expense {
   color: var(--expense-color);
+  font-weight: 600;
 }
 
 /* Category color dot */
@@ -341,3 +343,43 @@
   width: 50px;
   flex: none;
 } */
+
+.type-toggle {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.type-toggle button {
+  flex: 1;
+  padding: 0.8rem;
+  border: 1px solid #2c4b5f;
+  background: #132f40;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 600;
+}
+
+/* Hover */
+.type-toggle button:hover {
+  border-color: #4ea1ff;
+}
+
+/* Active state */
+.type-toggle .active {
+  transform: scale(1.02);
+}
+
+/* Income active */
+.type-toggle .income-btn.active {
+  background: var(--income-color);
+  border-color: #34c26e;
+}
+
+/* Expense active */
+.type-toggle .expense-btn.active {
+  background: var(--expense-color);
+  border-color: #ff5c5c;
+}
