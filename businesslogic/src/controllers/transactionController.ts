@@ -21,8 +21,8 @@ export async function createTransaction(req: Request, res: Response) {
             return;
         }
  
-        if (type !== "income" && type !== "expense") {
-            res.status(400).json({ error: 'type must be "income" or "expense"' });
+        if (type !== "income" && type !== "expense" && type !== "savings") {
+            res.status(400).json({ error: 'type must be "income", "expense", or "savings"' });
             return;
         }
  
@@ -134,8 +134,8 @@ export async function updateTransaction(req: Request, res: Response) {
             return;
         }
 
-        if (type && type !== "income" && type !== "expense") {
-            res.status(400).json({ error: 'type must be "income" or "expense"' });
+        if (type && type !== "income" && type !== "expense" && type !== "savings") {
+            res.status(400).json({ error: 'type must be "income", "expense", or "savings"' });
             return;
         }
         let parsedDate: Date | undefined;
@@ -146,16 +146,6 @@ export async function updateTransaction(req: Request, res: Response) {
                 return;
             }
         }
-
-        // const updatedTransaction = await transactionQueries.updateTransaction(transactionId, userId, {
-        //     name,
-        //     amount,
-        //     type,
-        //     date: date ? new Date(date) : undefined,
-        //     categoryId,
-        //     description,
-        // });
-
         // This will check if the values are undefined, if not then they will be added to the update object
         const updatedTransaction = await transactionQueries.updateTransaction(transactionId, userId, {
             ...(categoryId !== undefined && { categoryId }),
@@ -194,6 +184,25 @@ export async function deleteTransaction(req: Request, res: Response) {
 
     } catch (error) {
         console.log("Error deleting transaction:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+export async function getDashboardStats(req: Request, res: Response) {
+    try {
+        const { userId } = getAuth(req);
+
+        if (!userId) {
+            res.status(401).json({ error: "Unauthorized" });
+            return;
+        }
+
+        const stats = await transactionQueries.getDashboardStats(userId);
+
+        res.status(200).json({ stats });
+
+    } catch (error) {
+        console.log("Error getting dashboard stats:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 }

@@ -68,8 +68,66 @@ export const deleteTransaction = async (transactionId: string, userId: string) =
     if (existingTransaction.userId !== userId){
         throw new Error(`Unauthorized to delete this transaction`)
     }
-    await db.delete(transactions).where(eq(transactions.id, transactionId));
+    await db.delete(transactions).where(
+            and(
+                eq(transactions.id, transactionId),
+                eq(transactions.userId, userId)
+            )
+        );
     return existingTransaction;
 }
 
 // See queries ts under the projects C
+export const getDashboardStats = async (userId: string) => {
+    const now = new Date();
+
+    // Start of current month
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    // End of current month
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    // Get all transactions for current month
+    const monthlyTransactions = await db.query.transactions.findMany({
+        where: and(
+            eq(transactions.userId, userId),
+            gte(transactions.date, startOfMonth),
+            lte(transactions.date, endOfMonth)
+        ),
+    });
+
+    // Calculate totals
+    const totalIncome = monthlyTransactions
+        .filter((t) => t.type === "income")
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+
+    const totalExpenses = monthlyTransactions
+        .filter((t) => t.type === "expense")
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+
+    const totalSavings = monthlyTransactions.filter((t) => t.type === "savings")
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+    
+    const totalBalance = totalIncome - totalExpenses - totalSavings;
+
+    // Optional: total amount across ALL time
+    const allTransactions = await db.query.transactions.findMany({
+        where: eq(transactions.userId, userId),
+    });
+
+    const totalAmount = allTransactions.reduce((sum, t) => {
+        if (t.type === "income") {
+            return sum + Number(t.amount);
+        }
+
+        return sum - Number(t.amount);
+    }, 0);
+
+    return {
+        totalAmount,
+        totalIncome,
+        totalExpenses,
+        totalSavings,
+        totalBalance,
+    };
+};

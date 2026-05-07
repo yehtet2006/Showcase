@@ -7,7 +7,7 @@ import { desc, relations } from 'drizzle-orm';
 export const userRolesEnum = pgEnum("user_roles", ["admin", "user"]);
 
 // Enum for the transaction types
-export const transactionTypesEnum = pgEnum("transaction_types", ["income", "expense"]);
+export const transactionTypesEnum = pgEnum("transaction_types", ["income", "expense", "savings"]);
 
 // User table definition
 export const users = pgTable("users", {
