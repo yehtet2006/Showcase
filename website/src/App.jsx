@@ -34,8 +34,8 @@ function App() {
         <Routes>
           <Route path="/"element={isSignedIn ? <DashboardPage /> : <SignInPage />} />
           <Route path="/dashboard"element={isSignedIn ? <DashboardPage /> : <SignInPage />} />
-          <Route path='/transactions' element={isSignedIn && <TransactionsPage />} />
-          <Route path='/transactions/all' element={isSignedIn && <AllTransactionsPage />} />
+          <Route path='/transactions/add' element={isSignedIn && <TransactionsPage />} />
+          <Route path='/transactions' element={isSignedIn && <AllTransactionsPage />} />
           <Route path='/analytics' element={isSignedIn && <AnalyticsPage />} />
           <Route path='/profile' element={isSignedIn && <ProfilePage />} />
           <Route path='/settings' element={currentUser?.role === "admin" && isSignedIn && <SettingsPage />} />

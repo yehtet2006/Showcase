@@ -5,7 +5,11 @@ import { useUser } from "../hooks/useUsers";
 function DashboardPage() {
   const {userId} = useAuth();
 
-  const { data: currentUser } = useUser(userId);
+  const { data: currentUser, isLoading, isError } = useUser(userId);
+
+  if(isLoading) return <div><h1>Welkom: Loading...</h1></div>;
+  if(isError) return <div>Error loading user data</div>;
+
   return (
     <div>
         <h1>Welkom: {currentUser?.name}</h1>

@@ -150,7 +150,7 @@ function TransactionsPage() {
       <div className='all-transactions-container'>
         <div className='top-row-filter'>
           <span>Recente Transacties</span> <br />
-          <Link className='all-transactions-link' to="/transactions/all">Bekijk alle transacties</Link>
+          <Link className='all-transactions-link' to="/transactions">Bekijk alle transacties</Link>
         </div>
         <li className="transaction-header">
             <span><h3>Name</h3></span>

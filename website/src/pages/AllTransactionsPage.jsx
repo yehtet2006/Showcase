@@ -19,7 +19,7 @@ function AllTransactionsPage() {
 
   return (
     <div>
-        <Link to="/transactions">Terug naar transacties</Link>
+        <Link className="back" to="/transactions/add">+ Voeg een transactie toe</Link>
         <div className='all-transactions-container'>
         <li className="transaction-header">
             <span><h3>Name</h3></span>

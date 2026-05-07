@@ -192,3 +192,21 @@ nav li:first-child {
     padding-bottom: 90px;
   }
 }
+
+.back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  /* color: var(--text-color); */
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.back:hover {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
