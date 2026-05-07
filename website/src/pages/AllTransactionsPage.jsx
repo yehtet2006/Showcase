@@ -35,8 +35,8 @@ function AllTransactionsPage() {
             <li className='transaction-list-items' key={transaction.id}>
               <span>{transaction.name}</span>
               <span>{transaction.description}</span>
-              <span className={transaction.type === "income" ? "income" : "expense"}>
-                {/* {transaction.amount} */}{transaction.type === "income" ? `+$${transaction.amount}` : `-$${transaction.amount}`}
+              <span className={transaction.type === "income" ? "income" : transaction.type === "savings" ? "savings" : "expense"}>
+                {transaction.type === "income" || transaction.type === "savings" ? `+$${transaction.amount}` : `-$${transaction.amount}`}
               </span>
               <span>{new Date(transaction.date).toLocaleDateString()}</span>
               <span>{categories?.find((cat) => cat.id === transaction.categoryId)?.name || 'No category'}{categories?.find((cat) => cat.id === transaction.categoryId)?.color && (

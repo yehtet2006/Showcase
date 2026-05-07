@@ -83,6 +83,14 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
                 >
                     Expense
                 </button>
+
+                <button
+                    type="button"
+                    className={formData.type === "savings" ? "active savings-btn" : ""}
+                    onClick={() => setFormData({ ...formData, type: "savings" })}
+                >
+                    Savings
+                </button>
                 </div>
             </div>
             {isError && <p className="error">Error updating transaction. Please try again.</p>}

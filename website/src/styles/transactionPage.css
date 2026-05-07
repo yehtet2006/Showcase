@@ -156,12 +156,17 @@
 
 /* Colors */
 .income {
-  color: var(--green-color);
+  color: var(--income-color);
   font-weight: 600;
 }
 
 .expense {
   color: var(--expense-color);
+  font-weight: 600;
+}
+
+.savings {
+  color: var(--green-color);
   font-weight: 600;
 }
 
@@ -382,4 +387,10 @@
 .type-toggle .expense-btn.active {
   background: var(--expense-color);
   border-color: #ff5c5c;
+}
+
+/* Savings active */
+.type-toggle .savings-btn.active {
+  background: var(--green-color);
+  border-color: #34c26e;
 }
