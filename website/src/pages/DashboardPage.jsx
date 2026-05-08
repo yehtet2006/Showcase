@@ -3,6 +3,7 @@ import { useUser } from "../hooks/useUsers";
 import { Link, useNavigate } from "react-router";
 import AmountCard from "../components/AmountCard";
 import '../styles/dashboardPage.css'
+import { useDashboardData } from "../hooks/useTransactions";
 
 function DashboardPage() {
   const {userId} = useAuth();
@@ -10,10 +11,13 @@ function DashboardPage() {
   const jaar = new Date().getFullYear();
   const navigate = useNavigate();
   const { data: currentUser, isLoading, isError } = useUser(userId);
-
+  const { data: dashboardData, isLoading: isDashboardDataLoading, isError: isDashboardDataError } = useDashboardData();
   if(isLoading) return <div><h1>Welkom: Loading...</h1></div>;
   if(isError) return <div>Error loading user data</div>;
-
+  if(isDashboardDataError) return <div>Error loading dashboard data</div>;
+  if (isDashboardDataLoading) {
+  return <div>Loading dashboard...</div>;
+}
   return (
     <>
     <div className="top-container">
@@ -34,10 +38,10 @@ function DashboardPage() {
     </div>
     <div className="dashboard-container">
       <div className="amount-card-container">
-        <AmountCard type="total"/>
-        <AmountCard type="income"/>
-        <AmountCard type="expense"/>
-        <AmountCard type="savings"/>
+        <AmountCard type="total" value={dashboardData?.totalBalanceThisMonth} />
+        <AmountCard type="income" value={dashboardData?.totalIncome} />
+        <AmountCard type="expense" value={dashboardData?.totalExpenses} />
+        <AmountCard type="savings" value={dashboardData?.totalSavings} />
       </div>
       <div className="charts-container">
         <div className="graph-chart">Bars</div>

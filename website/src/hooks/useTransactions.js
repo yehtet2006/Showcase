@@ -4,7 +4,8 @@ import {
     getTransactionById,
     getTransactions,
     updateTransaction,
-    deleteTransaction
+    deleteTransaction,
+    getDashboardData
  } from "../lib/api";
 import { use } from "react";
 
@@ -17,6 +18,14 @@ export const useTransactions = () => {
     })
     return result;
 };
+
+export const useDashboardData = () => {
+    const result = useQuery({
+        queryKey: ["dashboardData"],
+        queryFn: getDashboardData,
+    })
+    return result;
+}
 
 export const useAddTransaction = () => {
     return useMutation({ mutationFn: addTransaction});

@@ -108,7 +108,7 @@ export const getDashboardStats = async (userId: string) => {
     const totalSavings = monthlyTransactions.filter((t) => t.type === "savings")
         .reduce((sum, t) => sum + Number(t.amount), 0);
     
-    const totalBalance = totalIncome - totalExpenses - totalSavings;
+    const totalBalanceThisMonth = totalIncome - totalExpenses - totalSavings;
 
     // Optional: total amount across ALL time
     const allTransactions = await db.query.transactions.findMany({
@@ -128,6 +128,70 @@ export const getDashboardStats = async (userId: string) => {
         totalIncome,
         totalExpenses,
         totalSavings,
-        totalBalance,
+        totalBalanceThisMonth,
     };
+};
+
+export const getMonthlyIncomeExpense = async (userId: string) => {
+    const now = new Date();
+    const months: {
+        month: string;
+        income: number;
+        expense: number;
+    }[] = [];
+
+    // Create empty last 12 months
+    for (let i = 11; i >= 0; i--) {const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+
+        months.push({
+            month: date.toLocaleString("en-US", {
+                month: "short",
+                year: "numeric",
+            }),
+            income: 0,
+            expense: 0,
+        });
+    }
+
+    const twelveMonthsAgo = new Date(
+        now.getFullYear(),
+        now.getMonth() - 11,
+        1
+    );
+
+    const transactionsData =
+        await db.query.transactions.findMany({
+            where: and(
+                eq(transactions.userId, userId),
+                gte(transactions.date, twelveMonthsAgo)
+            ),
+        });
+
+    transactionsData.forEach((transaction) => {
+        const month = transaction.date.toLocaleString(
+            "en-US",
+            {
+                month: "short",
+                year: "numeric",
+            }
+        );
+
+        const monthEntry = months.find(
+            (m) => m.month === month
+        );
+
+        if (!monthEntry) return;
+
+        if (transaction.type === "income") {
+            monthEntry.income += Number(
+                transaction.amount
+            );
+        } else {
+            monthEntry.expense += Number(
+                transaction.amount
+            );
+        }
+    });
+
+    return months;
 };
