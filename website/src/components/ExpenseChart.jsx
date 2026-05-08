@@ -1,0 +1,51 @@
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
+function ExpensePieChart({ expenseData, categories }) {
+
+  // Merge category colors into expense data
+  const chartData = expenseData.map((expense) => {
+    const matchingCategory = categories.find(
+      (cat) => cat.name === expense.category
+    );
+
+    return {
+      ...expense,
+      color: matchingCategory?.color || "#8884d8",
+    };
+  });
+
+  return (
+    <ResponsiveContainer width="100%" height={350}>
+      <PieChart>
+        <Pie
+          data={chartData}
+          dataKey="amount"
+          nameKey="category"
+          cx="50%"
+          cy="50%"
+          outerRadius={120}
+          label
+        >
+          {chartData.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={entry.color}
+            />
+          ))}
+        </Pie>
+
+        <Tooltip />
+        <Legend />
+      </PieChart>
+    </ResponsiveContainer>
+  );
+}
+
+export default ExpensePieChart;

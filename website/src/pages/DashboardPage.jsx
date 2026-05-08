@@ -2,8 +2,11 @@ import { useAuth } from "@clerk/react"
 import { useUser } from "../hooks/useUsers";
 import { Link, useNavigate } from "react-router";
 import AmountCard from "../components/AmountCard";
+import MonthlyBarChart from "../components/MonthlyBarChart";
+import ExpensePieChart from "../components/ExpenseChart";
 import '../styles/dashboardPage.css'
 import { useDashboardData } from "../hooks/useTransactions";
+import { useCategories } from "../hooks/useCategories";
 
 function DashboardPage() {
   const {userId} = useAuth();
@@ -12,12 +15,13 @@ function DashboardPage() {
   const navigate = useNavigate();
   const { data: currentUser, isLoading, isError } = useUser(userId);
   const { data: dashboardData, isLoading: isDashboardDataLoading, isError: isDashboardDataError } = useDashboardData();
+  const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategories();
   if(isLoading) return <div><h1>Welkom: Loading...</h1></div>;
   if(isError) return <div>Error loading user data</div>;
   if(isDashboardDataError) return <div>Error loading dashboard data</div>;
-  if (isDashboardDataLoading) {
-  return <div>Loading dashboard...</div>;
-}
+  if (isDashboardDataLoading) {return <div>Loading dashboard...</div>;}
+  if (isCategoriesLoading) {return <div>Loading categories...</div>;}
+  if (isCategoriesError) {return <div>Error loading categories...</div>;}
   return (
     <>
     <div className="top-container">
@@ -38,14 +42,28 @@ function DashboardPage() {
     </div>
     <div className="dashboard-container">
       <div className="amount-card-container">
-        <AmountCard type="total" value={dashboardData?.totalBalanceThisMonth} />
-        <AmountCard type="income" value={dashboardData?.totalIncome} />
-        <AmountCard type="expense" value={dashboardData?.totalExpenses} />
-        <AmountCard type="savings" value={dashboardData?.totalSavings} />
+        <AmountCard type="total" value={dashboardData?.summary.totalBalanceThisMonth} />
+        <AmountCard type="income" value={dashboardData?.summary.totalIncome} />
+        <AmountCard type="expense" value={dashboardData?.summary.totalExpenses} />
+        <AmountCard type="savings" value={dashboardData?.summary.totalSavings} />
       </div>
       <div className="charts-container">
-        <div className="graph-chart">Bars</div>
-        <div className="pie-chart">Pie</div>
+        <div className="graph-chart">
+          <h2>Inkomsten vs Uitgaven</h2>
+
+          <MonthlyBarChart
+            data={dashboardData?.monthlyChart || []}
+          />
+        </div>
+
+        <div className="pie-chart">
+          <h2>Uitgaven per categorie</h2>
+
+          <ExpensePieChart
+            expenseData={dashboardData?.expenseCategories || []}
+            categories={categories || []}
+          />
+        </div>
       </div>
     </div>
     <div className="recent-transactions-container">
