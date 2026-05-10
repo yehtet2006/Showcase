@@ -12,13 +12,7 @@ function useUserSync() {
 
     useEffect(() => {
         if (isSignedIn && user && !isPending && !isSuccess) {
-            // syncUserMutation({
-            //     email: user.emailAddresses[0]?.emailAddress || '',
-            //     name: user.fullName || user.firstName,
-
-            // });
             syncUserMutation();
-
         }
     }, [isSignedIn, user, syncUserMutation, isPending, isSuccess])
     return { isSynced: isSuccess };
