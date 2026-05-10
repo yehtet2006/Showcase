@@ -5,6 +5,7 @@ import { requireAuth } from "@clerk/express";
 const router = Router();
 
 router.post("/", requireAuth(), transactionController.createTransaction);
+router.get("/dashboard/stats", requireAuth(), transactionController.getDashboardStats);
 router.get("/", requireAuth(), transactionController.getTransactionsByUserId);
 router.get("/:transactionId", requireAuth(), transactionController.getTransactionById);
 router.put("/:transactionId", requireAuth(), transactionController.updateTransaction);

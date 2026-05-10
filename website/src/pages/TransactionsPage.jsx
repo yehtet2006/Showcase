@@ -42,7 +42,7 @@ function TransactionsPage() {
         return;
       }
 
-      if (formData.type !== 'income' && formData.type !== 'expense') {
+      if (formData.type !== 'income' && formData.type !== 'expense' && formData.type !== 'savings') {
         alert('Please select a valid type');
         return;
       } else if (isNaN(formData.amount) || Number(formData.amount) <= 0) {
@@ -56,6 +56,14 @@ function TransactionsPage() {
         date: new Date(formData.date).toISOString(),
         categoryId: formData.categoryId || null,
       });
+      setFormData({
+            name: '',
+            amount: '',
+            type: '',
+            date: '',
+            description: '',
+            categoryId: ''
+          })
       queryClient.invalidateQueries(['transactions']);
     } catch (error) {
       console.error('Error adding transaction:', error);
@@ -89,12 +97,35 @@ function TransactionsPage() {
           <input type="text" name="name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
           <label>Amount:</label>
           <input type="number" name="amount" value={formData.amount} onChange={(e) => setFormData({...formData, amount: e.target.value})} />
+          
           <label>Type:</label>
-          <select name="type" value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})}>
-            <option value="">Selecteer de type</option>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
-          </select>
+
+          <div className="type-toggle">
+            <button
+              type="button"
+              className={formData.type === "income" ? "active income-btn" : ""}
+              onClick={() => setFormData({ ...formData, type: "income" })}
+            >
+              Income
+            </button>
+
+            <button
+              type="button"
+              className={formData.type === "expense" ? "active expense-btn" : ""}
+              onClick={() => setFormData({ ...formData, type: "expense" })}
+            >
+              Expense
+            </button>
+
+            <button
+              type="button"
+              className={formData.type === "savings" ? "active savings-btn" : ""}
+              onClick={() => setFormData({ ...formData, type: "savings" })}
+            >
+              Savings
+            </button>
+          </div>
+          
           <label>Date:</label>
           <input type="date" name="date" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} />
           <label>Description:</label>
@@ -134,7 +165,9 @@ function TransactionsPage() {
               Add
             </button>
           </div>
-          <button type="submit">Toevoegen</button>
+          <button type="submit" onClick={handleSubmit}>
+            Toevoegen
+          </button>
           <button className='reset' type="button" onClick={() => setFormData({
             name: '',
             amount: '',
@@ -165,9 +198,11 @@ function TransactionsPage() {
             <li className='transaction-list-items' key={transaction.id}>
               <span>{transaction.name}</span>
               <span>{transaction.description}</span>
-              <span className={transaction.type === "income" ? "income" : "expense"}>
-                {/* {transaction.amount} */}{transaction.type === "income" ? `+$${transaction.amount}` : `-$${transaction.amount}`}
-              </span>
+              <span>{transaction.type === 'income' || transaction.type === 'savings' ? (
+                <span className={transaction.type === 'income' ? 'income' : 'savings'}>+{transaction.amount}</span>
+              ) : transaction.type === 'expense' ? (
+                <span className='expense'>-{transaction.amount}</span>
+              ) : null}</span>
               <span>{new Date(transaction.date).toLocaleDateString()}</span>
               <span>{categories?.find((cat) => cat.id === transaction.categoryId)?.name || 'No category'}{categories?.find((cat) => cat.id === transaction.categoryId)?.color && (
                 <span className='color'

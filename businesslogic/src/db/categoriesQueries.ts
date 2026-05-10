@@ -1,6 +1,6 @@
 import { db } from ".";
 import { eq, and } from "drizzle-orm";
-import { categories, type NewCategory } from "./schema";
+import { categories, type NewCategory, transactions, type NewTransaction } from "./schema";
 
 // Category queries
 export const createCategory = async (category: NewCategory) => {
@@ -44,3 +44,35 @@ export const deleteCategory = async (categoryId: string, userId: string) => {
     await db.delete(categories).where(and(eq(categories.id, categoryId), eq(categories.userId, userId)));
     
 }
+
+export const getExpenseCategories = async (userId: string) => {
+    const expenseTransactions = await db.query.transactions.findMany({
+        where: and(
+            eq(transactions.userId, userId),
+            eq(transactions.type, "expense")
+        ),
+        with: {
+            category: true,
+        },
+    });
+
+    const categoryMap: Record<string, number> = {};
+
+    expenseTransactions.forEach((transaction) => {
+        const categoryName =
+            transaction.category?.name || "Other";
+
+        if (!categoryMap[categoryName]) {
+            categoryMap[categoryName] = 0;
+        }
+
+        categoryMap[categoryName] += Number(transaction.amount);
+    });
+
+    return Object.entries(categoryMap).map(
+        ([category, amount]) => ({
+            category,
+            amount,
+        })
+    );
+};

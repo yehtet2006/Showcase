@@ -66,11 +66,32 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
             </div>
             <div className="form-group-select">
                 <label>Type:</label>
-                <select value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})} required>
-                    <option value="">Select a type</option>
-                    <option value="income">Income</option>
-                    <option value="expense">Expense</option>
-                </select>
+
+                <div className="type-toggle">
+                <button
+                    type="button"
+                    className={formData.type === "income" ? "active income-btn" : ""}
+                    onClick={() => setFormData({ ...formData, type: "income" })}
+                >
+                    Income
+                </button>
+
+                <button
+                    type="button"
+                    className={formData.type === "expense" ? "active expense-btn" : ""}
+                    onClick={() => setFormData({ ...formData, type: "expense" })}
+                >
+                    Expense
+                </button>
+
+                <button
+                    type="button"
+                    className={formData.type === "savings" ? "active savings-btn" : ""}
+                    onClick={() => setFormData({ ...formData, type: "savings" })}
+                >
+                    Savings
+                </button>
+                </div>
             </div>
             {isError && <p className="error">Error updating transaction. Please try again.</p>}
             <button type="submit" disabled={isPending}>
@@ -81,7 +102,7 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
                     deleteTransactionMutation.mutate(transaction.id, {  // transaction.id not selectedTransaction.id
                         onSuccess: () => {
                             onClose();
-                            navigate('/transactions/all');
+                            navigate('/transactions');
                         }
                     });
                 }
