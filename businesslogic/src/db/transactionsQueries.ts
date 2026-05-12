@@ -1,5 +1,5 @@
 import { db } from ".";
-import { and, eq, gte, lte } from "drizzle-orm";
+import { and, eq, gte, lte, sql } from "drizzle-orm";
 import { transactions, type NewTransaction } from "./schema";
 
 
@@ -87,7 +87,7 @@ export const getDashboardStats = async (userId: string) => {
     // End of current month
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
-    // Get all transactions for current month
+    // Get all transactions(NOT SAVINGS) for current month
     const monthlyTransactions = await db.query.transactions.findMany({
         where: and(
             eq(transactions.userId, userId),
@@ -105,9 +105,14 @@ export const getDashboardStats = async (userId: string) => {
         .filter((t) => t.type === "expense")
         .reduce((sum, t) => sum + Number(t.amount), 0);
 
-    const totalSavings = monthlyTransactions.filter((t) => t.type === "savings")
-        .reduce((sum, t) => sum + Number(t.amount), 0);
-    
+    // Get total savings
+    const [totalSavingsResult] = await db
+        .select({ total: sql<number>`coalesce(sum(${transactions.amount}), 0)` })
+        .from(transactions)
+        .where(and(eq(transactions.userId, userId), eq(transactions.type, "savings"))); 
+
+    const totalSavings = Number(totalSavingsResult?.total ?? 0);
+
     const totalBalanceThisMonth = totalIncome - totalExpenses - totalSavings;
 
     // Optional: total amount across ALL time
@@ -119,7 +124,6 @@ export const getDashboardStats = async (userId: string) => {
         if (t.type === "income") {
             return sum + Number(t.amount);
         }
-
         return sum - Number(t.amount);
     }, 0);
 
@@ -134,27 +138,17 @@ export const getDashboardStats = async (userId: string) => {
 
 export const getMonthlyIncomeExpense = async (userId: string) => {
     const now = new Date();
-    const months: { month: string; income: number; expense: number;}[] = [];
-
+    const months: { month: string; income: number; expense: number; savings: number }[] = [];
     // Create empty last 12 months
     for (let i = 11; i >= 0; i--) {const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-
         months.push({
-            month: date.toLocaleString("en-US", {
-                month: "short",
-                year: "numeric",
-            }),
+            month: date.toLocaleString("en-US", {month: "short", year: "numeric",}),
             income: 0,
             expense: 0,
+            savings: 0,
         });
     }
-
-    const twelveMonthsAgo = new Date(
-        now.getFullYear(),
-        now.getMonth() - 11,
-        1
-    );
-
+    const twelveMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 11, 1);
     const transactionsData =
         await db.query.transactions.findMany({
             where: and(
@@ -175,19 +169,16 @@ export const getMonthlyIncomeExpense = async (userId: string) => {
         const monthEntry = months.find(
             (m) => m.month === month
         );
-
         if (!monthEntry) return;
 
         if (transaction.type === "income") {
-            monthEntry.income += Number(
-                transaction.amount
-            );
-        } else {
-            monthEntry.expense += Number(
-                transaction.amount
-            );
+            monthEntry.income += Number(transaction.amount);
+        } else if (transaction.type === "expense") {
+            monthEntry.expense += Number(transaction.amount);
+        } else if (transaction.type === "savings") {
+            monthEntry.savings += Number(transaction.amount);
         }
+        
     });
-
     return months;
 };
