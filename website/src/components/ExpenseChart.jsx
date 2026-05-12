@@ -22,7 +22,7 @@ function ExpensePieChart({ expenseData, categories }) {
   });
 
   return (
-    <ResponsiveContainer width="100%" height={350}>
+    <ResponsiveContainer width="100%" height={450}>
       <PieChart>
         <Pie
           data={chartData}

@@ -134,3 +134,14 @@
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
+
+.graph-chart,
+.pie-chart {
+  height: fit-content;
+
+  h2 {
+    margin-bottom: 50px;
+    font-size: 30px;
+    color: var(--text-color);
+  }
+}
