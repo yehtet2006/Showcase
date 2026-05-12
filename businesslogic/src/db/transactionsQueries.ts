@@ -134,11 +134,7 @@ export const getDashboardStats = async (userId: string) => {
 
 export const getMonthlyIncomeExpense = async (userId: string) => {
     const now = new Date();
-    const months: {
-        month: string;
-        income: number;
-        expense: number;
-    }[] = [];
+    const months: { month: string; income: number; expense: number;}[] = [];
 
     // Create empty last 12 months
     for (let i = 11; i >= 0; i--) {const date = new Date(now.getFullYear(), now.getMonth() - i, 1);

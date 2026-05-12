@@ -223,10 +223,13 @@ export async function getDashboardStats(req: Request, res: Response) {
 
         const expenseCategories = await categoryQueries.getExpenseCategories(userId);
 
+        const expenseCategoriesPerMonth = await categoryQueries.getExpenseCategoriesPerMonth(userId);
+
         res.status(200).json({
             summary,
             monthlyChart,
             expenseCategories,
+            expenseCategoriesPerMonth
         });
 
     } catch (error) {
