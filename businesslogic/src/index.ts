@@ -45,3 +45,5 @@ app.listen(ENV.PORT, () => {
     console.log(`http://localhost:${ENV.PORT}/api/health`);
     console.log(`Frontend URL: ${ENV.FRONTEND_URL}`)
 })
+
+export default app;
