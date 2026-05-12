@@ -15,12 +15,6 @@ export const useUser = (id) => {
   });
 };
 
-// export const useUpdateUser = () => {
-//   return useMutation({
-//     mutationFn: updateUser,
-//   })
-// }
-
 export function useUpdateUser() {
   const queryClient = useQueryClient();
 
@@ -35,16 +29,3 @@ export function useUpdateUser() {
     }
   });
 }
-// export const useUpdateUser = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: updateUser,
-
-//     onSuccess: (_, variables) => {
-//       queryClient.invalidateQueries({ queryKey: ["user"] });
-//       queryClient.invalidateQueries({ queryKey: ["user", variables.id] });
-//       queryClient.invalidateQueries({ queryKey: ["myUser"] });
-//     }
-//   })
-// }
