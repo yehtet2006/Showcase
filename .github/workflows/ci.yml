@@ -1,10 +1,11 @@
-name: CI Pipeline
+name: Full Stack CI
 
 on:
   push:
     branches:
       - main
       - develop
+      - feature/*
 
   pull_request:
     branches:
@@ -23,7 +24,7 @@ jobs:
       NODE_ENV: test
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup Node
@@ -33,19 +34,27 @@ jobs:
           cache: npm
 
       # Backend
-      - name: Install backend dependencies
+      - name: Install Backend Dependencies
         working-directory: ./server
         run: npm ci
 
-      - name: Run backend tests
+      - name: Build Backend
+        working-directory: ./server
+        run: npm run build
+
+      - name: Run Backend Tests
         working-directory: ./server
         run: npm test
 
       # Frontend
-      - name: Install frontend dependencies
+      - name: Install Frontend Dependencies
         working-directory: ./client
         run: npm ci
 
-      - name: Build frontend
+      - name: Run Frontend Tests
+        working-directory: ./client
+        run: npm test
+
+      - name: Build Frontend
         working-directory: ./client
         run: npm run build
