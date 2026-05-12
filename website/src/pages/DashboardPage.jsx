@@ -1,27 +1,59 @@
 import { useAuth } from "@clerk/react"
 import { useUser } from "../hooks/useUsers";
-import { Link, useNavigate } from "react-router";
+import { data, Link, useNavigate } from "react-router";
 import AmountCard from "../components/AmountCard";
 import MonthlyBarChart from "../components/MonthlyBarChart";
 import ExpensePieChart from "../components/ExpenseChart";
 import '../styles/dashboardPage.css'
 import { useDashboardData } from "../hooks/useTransactions";
 import { useCategories } from "../hooks/useCategories";
+import { useState } from "react";
 
 function DashboardPage() {
+  
   const {userId} = useAuth();
-  const maand = new Date().toLocaleString('nl', { month: 'long' });
+
+  // Get current month and year for display
+  const maand = new Date().toLocaleString('en-us', { month: 'short' });
   const jaar = new Date().getFullYear();
+  
+  const [showCurrentMonth, setShowCurrentMonth] = useState(true);
+
+  const currentMonth = new Date().toLocaleString('en-us', {
+    month: 'short',
+    year: 'numeric',
+  });
+
+  
+
   const navigate = useNavigate();
+
   const { data: currentUser, isLoading, isError } = useUser(userId);
   const { data: dashboardData, isLoading: isDashboardDataLoading, isError: isDashboardDataError } = useDashboardData();
   const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategories();
+
+  const currentMonthExpenses = dashboardData?.expenseCategoriesPerMonth?.map((category) => {
+  const monthData = category.monthlyData?.find(
+    (data) => data.month === currentMonth
+  )
+
+    return {
+      category: category.category,
+      amount: monthData ? monthData.amount : 0,
+    }
+  }) || [];
+
   if(isLoading) return <div><h1>Welkom: Loading...</h1></div>;
   if(isError) return <div>Error loading user data</div>;
+
   if(isDashboardDataError) return <div>Error loading dashboard data</div>;
   if (isDashboardDataLoading) {return <div>Loading dashboard...</div>;}
+
   if (isCategoriesLoading) {return <div>Loading categories...</div>;}
   if (isCategoriesError) {return <div>Error loading categories...</div>;}
+
+  console.log(currentMonth);
+  console.log(dashboardData?.monthlyChart);
   return (
     <>
     <div className="top-container">
@@ -58,11 +90,23 @@ function DashboardPage() {
 
         <div className="pie-chart">
           <h2>Uitgaven per categorie</h2>
+          
+          <button
+                onClick={() => setShowCurrentMonth(!showCurrentMonth)}
+              >
+                {showCurrentMonth
+                  ? "Toon alle uitgaven"
+                  : "Toon huidige maand"}
+              </button>
 
           <ExpensePieChart
-            expenseData={dashboardData?.expenseCategories || []}
-            categories={categories || []}
-          />
+              expenseData={
+                showCurrentMonth
+                  ? currentMonthExpenses
+                  : dashboardData?.expenseCategories || []
+              }
+              categories={categories || []}
+            />
         </div>
       </div>
     </div>
