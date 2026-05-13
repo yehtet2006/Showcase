@@ -3,31 +3,6 @@ import * as userQueries from "../db/userQueries";
 
 import { getAuth, clerkClient } from "@clerk/express";
 
-// export async function syncUser(req: Request, res: Response) {
-//     try {
-//         // Get the user ID from the authentication token using Clerk's getAuth function
-//         const { userId } = getAuth(req);
-//         if(!userId){
-//             res.status(401).json({ error: "Unauthorized" });
-//             return;
-//         }
-
-//         // The upsertUser function will create a new user if it doesn't exist, or update the existing user's name and email if it does exist 
-//         const { email, name } = req.body;
-//         if (!email || !name) {
-//             res.status(400).json({ error: "Email and name are required" });
-//             return;
-//         }
-
-//         // Sync the user with the database
-//         const user = await userQueries.upsertUser({ id: userId, email, name, role: "user" });
-//         res.status(200).json({ user });
-//     } catch (error) {
-//         console.log("Error syncing user:", error);
-//         res.status(500).json({ error: "Internal server error" });
-//     }
-// }
-
 export async function syncUser(req: Request, res: Response) {
   try {
     const { userId } = getAuth(req);
@@ -37,7 +12,7 @@ export async function syncUser(req: Request, res: Response) {
     }
 
 
-    // ✅ Fetch from Clerk (trusted)
+    //Fetch from Clerk (trusted)
     const clerkUser = await clerkClient.users.getUser(userId);
 
     const email = clerkUser.emailAddresses[0]?.emailAddress;

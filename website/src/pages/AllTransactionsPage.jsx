@@ -22,12 +22,12 @@ function AllTransactionsPage() {
         <Link className="back" to="/transactions/add">+ Voeg een transactie toe</Link>
         <div className='all-transactions-container'>
         <li className="transaction-header">
-            <span><h3>Name</h3></span>
-            <span><h3>Description</h3></span>
-            <span><h3>Amount</h3></span>
-            <span><h3>Date</h3></span>
-            <span><h3>Category</h3></span>
-            <span><h3>Actions</h3></span>
+            <span><h3>Naam</h3></span>
+            <span><h3>Beschrijving</h3></span>
+            <span><h3>Bedrag</h3></span>
+            <span><h3>Datum</h3></span>
+            <span><h3>Categorie</h3></span>
+            <span><h3>Acties</h3></span>
           </li>
         <ul className='transaction-list'>
           {transactions && transactions.length > 0 ? (
@@ -39,7 +39,7 @@ function AllTransactionsPage() {
                 {transaction.type === "income" || transaction.type === "savings" ? `+$${transaction.amount}` : `-$${transaction.amount}`}
               </span>
               <span>{new Date(transaction.date).toLocaleDateString()}</span>
-              <span>{categories?.find((cat) => cat.id === transaction.categoryId)?.name || 'No category'}{categories?.find((cat) => cat.id === transaction.categoryId)?.color && (
+              <span>{categories?.find((cat) => cat.id === transaction.categoryId)?.name || 'Geen categorie'}{categories?.find((cat) => cat.id === transaction.categoryId)?.color && (
                 <span className='color'
                   style={{
                     background: categories?.find((cat) => cat.id === transaction.categoryId)?.color,
@@ -59,7 +59,7 @@ function AllTransactionsPage() {
             </li>
           ))
         ) : (
-          <p>No transactions found.</p>
+          <p>Geen transacties gevonden.</p>
         )}
         </ul>
         

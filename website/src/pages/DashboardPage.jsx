@@ -10,22 +10,17 @@ import { useCategories } from "../hooks/useCategories";
 import { useState } from "react";
 
 function DashboardPage() {
-  
   const {userId} = useAuth();
-
   // Get current month and year for display
   const maand = new Date().toLocaleString('en-us', { month: 'short' });
   const jaar = new Date().getFullYear();
   
   const [showCurrentMonth, setShowCurrentMonth] = useState(true);
-
+  const [amountOfMonths, setAmountOfMonths] = useState(6);
   const currentMonth = new Date().toLocaleString('en-us', {
     month: 'short',
     year: 'numeric',
   });
-
-  
-
   const navigate = useNavigate();
 
   const { data: currentUser, isLoading, isError } = useUser(userId);
@@ -33,27 +28,16 @@ function DashboardPage() {
   const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategories();
 
   const currentMonthExpenses = dashboardData?.expenseCategoriesPerMonth?.map((category) => {
-  const monthData = category.monthlyData?.find(
-    (data) => data.month === currentMonth
-  )
-
+  const monthData = category.monthlyData?.find((data) => data.month === currentMonth)
     return {
       category: category.category,
       amount: monthData ? monthData.amount : 0,
     }
   }) || [];
 
-  if(isLoading) return <div><h1>Welkom: Loading...</h1></div>;
-  if(isError) return <div>Error loading user data</div>;
+  if(isLoading || isDashboardDataLoading || isCategoriesLoading) return <div><h1>Welkom: Laden...</h1></div>;
+  if(isError || isDashboardDataError || isCategoriesError) return <div>Error met laden van gebruikersgegevens</div>;
 
-  if(isDashboardDataError) return <div>Error loading dashboard data</div>;
-  if (isDashboardDataLoading) {return <div>Loading dashboard...</div>;}
-
-  if (isCategoriesLoading) {return <div>Loading categories...</div>;}
-  if (isCategoriesError) {return <div>Error loading categories...</div>;}
-
-  console.log(currentMonth);
-  console.log(dashboardData?.monthlyChart);
   return (
     <>
     <div className="top-container">
@@ -62,9 +46,9 @@ function DashboardPage() {
         <p>Dit is uw persoonlijke financiële dashboard voor <span>{maand.charAt(0).toUpperCase() + maand.slice(1)} {jaar}</span></p>
       </div>
       <div className="last-three-months-container">
-        <button className="month-button">feb</button>
-        <button className="month-button">mar</button>
-        <button className="month-button">april</button>
+        <button value={"feb"} className="month-button">feb</button>
+        <button value={"mar"} className="month-button">mar</button>
+        <button value={"april"} className="month-button">april</button>
       </div>
       <div className="add-transaction">
         <Link to="/transactions/add">
@@ -81,30 +65,21 @@ function DashboardPage() {
       </div>
       <div className="charts-container">
         <div className="graph-chart">
-          <h2>Inkomsten vs Uitgaven</h2>
-
-          <MonthlyBarChart
-            data={dashboardData?.monthlyChart || []}
-          />
+          <div className="graph-top">
+            <h2 className="title">Inkomsten vs Uitgaven</h2>
+            <button onClick={() => setAmountOfMonths(6)}>6 M</button>
+            <button onClick={() => setAmountOfMonths(12)}> 12 M </button>
+          </div>
+          {amountOfMonths === 6 ? (<MonthlyBarChart data={dashboardData?.monthlyChart.slice(6) || []}/>) : (<MonthlyBarChart data={dashboardData?.monthlyChart || []} />)}
         </div>
 
         <div className="pie-chart">
           <h2>Uitgaven per categorie</h2>
-          
-          <button
-                onClick={() => setShowCurrentMonth(!showCurrentMonth)}
-              >
-                {showCurrentMonth
-                  ? "Toon alle uitgaven"
-                  : "Toon huidige maand"}
-              </button>
-
+          <button onClick={() => setShowCurrentMonth(!showCurrentMonth)}>
+            {showCurrentMonth ? "Toon alle uitgaven" : "Toon huidige maand"}
+          </button>
           <ExpensePieChart
-              expenseData={
-                showCurrentMonth
-                  ? currentMonthExpenses
-                  : dashboardData?.expenseCategories || []
-              }
+              expenseData={ showCurrentMonth ? currentMonthExpenses : dashboardData?.expenseCategories || [] }
               categories={categories || []}
             />
         </div>
