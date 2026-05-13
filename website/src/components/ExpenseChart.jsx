@@ -5,6 +5,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  
 } from "recharts";
 
 function ExpensePieChart({ expenseData, categories }) {
@@ -22,7 +23,7 @@ function ExpensePieChart({ expenseData, categories }) {
   });
 
   return (
-    <ResponsiveContainer width="100%" height={350}>
+    <ResponsiveContainer width="100%" height={450}>
       <PieChart>
         <Pie
           data={chartData}
@@ -30,8 +31,10 @@ function ExpensePieChart({ expenseData, categories }) {
           nameKey="category"
           cx="50%"
           cy="50%"
-          outerRadius={120}
-          label
+          innerRadius="60%"
+          outerRadius="80%"
+          // label={(entry) => `${entry.category}: ${entry.amount}`}
+
         >
           {chartData.map((entry, index) => (
             <Cell

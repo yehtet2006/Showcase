@@ -20,7 +20,7 @@ function TransactionsPage() {
     name: '',
     amount: '',
     type: '',
-    date: '',
+    date: new Date().toISOString().split('T')[0],
     description: '',
     categoryId: ''
   })
@@ -60,7 +60,7 @@ function TransactionsPage() {
             name: '',
             amount: '',
             type: '',
-            date: '',
+            date: new Date().toISOString().split('T')[0],
             description: '',
             categoryId: ''
           })
@@ -172,7 +172,7 @@ function TransactionsPage() {
             name: '',
             amount: '',
             type: '',
-            date: '',
+            date: new Date().toISOString().split('T')[0],
             description: '',
             categoryId: ''
           })}>
