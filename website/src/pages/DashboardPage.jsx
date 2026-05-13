@@ -17,6 +17,8 @@ function DashboardPage() {
   
   const [showCurrentMonth, setShowCurrentMonth] = useState(true);
   const [amountOfMonths, setAmountOfMonths] = useState(6);
+  const [mobileChartIndex, setMobileChartIndex] = useState(0);
+
   const currentMonth = new Date().toLocaleString('en-us', {
     month: 'short',
     year: 'numeric',
@@ -38,7 +40,7 @@ function DashboardPage() {
   if(isLoading || isDashboardDataLoading || isCategoriesLoading) return <div><h1>Welkom: Laden...</h1></div>;
   if(isError || isDashboardDataError || isCategoriesError) return <div>Error met laden van gebruikersgegevens</div>;
 
-  const [mobileChartIndex, setMobileChartIndex] = useState(0);
+  
   const nextChart = () => {setMobileChartIndex((prev) => (prev === 1 ? 0 : prev + 1));};
   const prevChart = () => {setMobileChartIndex((prev) => (prev === 0 ? 1 : prev - 1));};
 
