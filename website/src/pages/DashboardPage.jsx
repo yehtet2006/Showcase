@@ -65,10 +65,10 @@ function DashboardPage() {
     </div>
     <div className="dashboard-container">
       <div className="amount-card-container">
-        <AmountCard type="total" value={dashboardData?.summary.totalBalanceThisMonth} />
-        <AmountCard type="income" value={dashboardData?.summary.totalIncome} />
-        <AmountCard type="expense" value={dashboardData?.summary.totalExpenses} />
-        <AmountCard type="savings" value={dashboardData?.summary.totalSavings} />
+        <AmountCard type="totaal" value={dashboardData?.summary.totalBalanceThisMonth} />
+        <AmountCard type="inkomen" value={dashboardData?.summary.totalIncome} />
+        <AmountCard type="uitgaven" value={dashboardData?.summary.totalExpenses} />
+        <AmountCard type="sparen" value={dashboardData?.summary.totalSavings} />
       </div>
       {/* <div className="charts-container">
         <div className="graph-chart">

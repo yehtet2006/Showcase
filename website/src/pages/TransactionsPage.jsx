@@ -199,9 +199,9 @@ function TransactionsPage() {
               <span>{transaction.name}</span>
               <span>{transaction.description}</span>
               <span>{transaction.type === 'income' || transaction.type === 'savings' ? (
-                <span className={transaction.type === 'income' ? 'income' : 'savings'}>+{transaction.amount}</span>
+                <span className={transaction.type === 'income' ? 'income' : 'savings'}>+€{transaction.amount}</span>
               ) : transaction.type === 'expense' ? (
-                <span className='expense'>-{transaction.amount}</span>
+                <span className='expense'>-€{transaction.amount}</span>
               ) : null}</span>
               <span>{new Date(transaction.date).toLocaleDateString()}</span>
               <span>{categories?.find((cat) => cat.id === transaction.categoryId)?.name || 'No category'}{categories?.find((cat) => cat.id === transaction.categoryId)?.color && (
