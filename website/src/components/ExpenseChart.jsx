@@ -33,7 +33,7 @@ function ExpensePieChart({ expenseData, categories }) {
           cy="50%"
           innerRadius="60%"
           outerRadius="80%"
-          // label={(entry) => `${entry.category}: ${entry.amount}`}
+          label={(entry) => `${entry.category}: ${entry.amount}`}
 
         >
           {chartData.map((entry, index) => (
