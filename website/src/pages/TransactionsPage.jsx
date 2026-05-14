@@ -106,7 +106,7 @@ function TransactionsPage() {
               className={formData.type === "income" ? "active income-btn" : ""}
               onClick={() => setFormData({ ...formData, type: "income" })}
             >
-              Income
+              Inkomen
             </button>
 
             <button
@@ -114,7 +114,7 @@ function TransactionsPage() {
               className={formData.type === "expense" ? "active expense-btn" : ""}
               onClick={() => setFormData({ ...formData, type: "expense" })}
             >
-              Expense
+              Uitgaven
             </button>
 
             <button
@@ -122,7 +122,7 @@ function TransactionsPage() {
               className={formData.type === "savings" ? "active savings-btn" : ""}
               onClick={() => setFormData({ ...formData, type: "savings" })}
             >
-              Savings
+              Sparen
             </button>
           </div>
           
@@ -162,7 +162,7 @@ function TransactionsPage() {
               onChange={(e) => setNewCategory({...newCategory, color: e.target.value})}
             />
             <button type="button" onClick={handleAddCategory}>
-              Add
+              Voeg categorie toe
             </button>
           </div>
           <button type="submit" onClick={handleSubmit}>

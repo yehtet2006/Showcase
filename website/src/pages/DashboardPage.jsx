@@ -12,14 +12,16 @@ import { useState } from "react";
 function DashboardPage() {
   const {userId} = useAuth();
   // Get current month and year for display
-  const maand = new Date().toLocaleString('en-us', { month: 'short' });
+  const maand = new Date().toLocaleString('nl', { month: 'short' });
   const jaar = new Date().getFullYear();
-  
+  const today = new Date().toLocaleString('en-US', { month: 'short', year: 'numeric',});
+
   const [showCurrentMonth, setShowCurrentMonth] = useState(true);
   const [amountOfMonths, setAmountOfMonths] = useState(6);
   const [mobileChartIndex, setMobileChartIndex] = useState(0);
+  const [selectedMonth, setSelectedMonth] = useState(today);
 
-  const currentMonth = new Date().toLocaleString('en-us', {
+  const currentMonth = new Date().toLocaleString('en-Us', {
     month: 'short',
     year: 'numeric',
   });
@@ -29,8 +31,16 @@ function DashboardPage() {
   const { data: dashboardData, isLoading: isDashboardDataLoading, isError: isDashboardDataError } = useDashboardData();
   const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategories();
 
+  const selectedMonthData = dashboardData?.monthlyChart?.find(
+    (item) => item.month === selectedMonth 
+  ) || { 
+    income: 0, 
+    expense: 0, 
+    savings: 0, 
+  };
+
   const currentMonthExpenses = dashboardData?.expenseCategoriesPerMonth?.map((category) => {
-  const monthData = category.monthlyData?.find((data) => data.month === currentMonth)
+    const monthData = category.monthlyData?.find((data) => data.month === selectedMonth)
     return {
       category: category.category,
       amount: monthData ? monthData.amount : 0,
@@ -44,6 +54,21 @@ function DashboardPage() {
   const nextChart = () => {setMobileChartIndex((prev) => (prev === 1 ? 0 : prev + 1));};
   const prevChart = () => {setMobileChartIndex((prev) => (prev === 0 ? 1 : prev - 1));};
 
+  function loadLastThreeMonths() {
+  const months = [];
+  for (let i = 0; i < 3; i++) {
+    const date = new Date();
+    date.setMonth(date.getMonth() - i);
+    months.push({
+      label: date.toLocaleString('nl', { month: 'short' }),
+      value: date.toLocaleString('en-us', {
+        month: 'short',
+        year: 'numeric',
+      }),
+    });
+  }
+  return months;
+}
 
   return (
     <>
@@ -53,9 +78,11 @@ function DashboardPage() {
         <p>Dit is uw persoonlijke financiële dashboard voor <span>{maand.charAt(0).toUpperCase() + maand.slice(1)} {jaar}</span></p>
       </div>
       <div className="last-three-months-container">
-        <button value={"feb"} className="month-button">feb</button>
-        <button value={"mar"} className="month-button">mar</button>
-        <button value={"april"} className="month-button">april</button>
+        {loadLastThreeMonths().map((month, index) => (
+        <button key={index} value={month.value} className={selectedMonth === month.value ? "month-button active": "month-button"} onClick={() => setSelectedMonth(month.value)}>
+          {month.label}
+        </button>
+      ))}
       </div>
       <div className="add-transaction">
         <Link to="/transactions/add">
@@ -65,36 +92,11 @@ function DashboardPage() {
     </div>
     <div className="dashboard-container">
       <div className="amount-card-container">
-        <AmountCard type="totaal" value={dashboardData?.summary.totalBalanceThisMonth} />
-        <AmountCard type="inkomen" value={dashboardData?.summary.totalIncome} />
-        <AmountCard type="uitgaven" value={dashboardData?.summary.totalExpenses} />
+        <AmountCard type="totaal" value={ selectedMonthData.income - selectedMonthData.expense - selectedMonthData.savings } />
+        <AmountCard type="inkomen" value={selectedMonthData.income} />
+        <AmountCard type="uitgaven" value={selectedMonthData.expense} />
         <AmountCard type="sparen" value={dashboardData?.summary.totalSavings} />
       </div>
-      {/* <div className="charts-container">
-        <div className="graph-chart">
-          <div className="graph-top">
-            <h2 className="title">Inkomsten vs Uitgaven</h2>
-            <div className="btn-container">
-              <button className={amountOfMonths === 6 ? "month-btn active" : "month-btn"} onClick={() => setAmountOfMonths(6)}>6 M</button>
-              <button className={amountOfMonths === 12 ? "month-btn active" : "month-btn"} onClick={() => setAmountOfMonths(12)}> 12 M </button>
-            </div>
-            
-          </div>
-          {amountOfMonths === 6 ? (<MonthlyBarChart data={dashboardData?.monthlyChart.slice(6) || []}/>) : (<MonthlyBarChart data={dashboardData?.monthlyChart || []} />)}
-        </div>
-        <div className="pie-chart">
-          <div className="graph-top">
-            {showCurrentMonth ? <h2 className="title">Uitgaven {currentMonth}</h2> : <h2 className="title">Uitgaven per categorie</h2>}
-            <button className="month-btn active" onClick={() => setShowCurrentMonth(!showCurrentMonth)}>
-              {showCurrentMonth ? "Toon alle uitgaven" : "Toon huidige maand"}
-            </button>
-          </div>
-          <ExpensePieChart
-              expenseData={ showCurrentMonth ? currentMonthExpenses : dashboardData?.expenseCategories || [] }
-              categories={categories || []}
-            />
-        </div>
-      </div> */}
       {/* DESKTOP CHARTS */}
       <div className="charts-container">
         <div className="graph-chart">
