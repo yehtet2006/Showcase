@@ -12,16 +12,16 @@ import { useState } from "react";
 function DashboardPage() {
   const {userId} = useAuth();
   // Get current month and year for display
-  const maand = new Date().toLocaleString('nl', { month: 'short' });
-  const jaar = new Date().getFullYear();
+  // const maand = new Date().toLocaleString('nl', { month: 'short' });
+  // const jaar = new Date().getFullYear();
   const today = new Date().toLocaleString('en-US', { month: 'short', year: 'numeric',});
 
   const [showCurrentMonth, setShowCurrentMonth] = useState(true);
   const [amountOfMonths, setAmountOfMonths] = useState(6);
   const [mobileChartIndex, setMobileChartIndex] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(today);
-
-  const currentMonth = new Date().toLocaleString('en-Us', {
+  const [selectedMndNL, setSelectedMndNL] = useState(new Date().toLocaleString('nl', { month: 'short', year: 'numeric',}));
+  const currentMonth = new Date().toLocaleString('nl', {
     month: 'short',
     year: 'numeric',
   });
@@ -61,25 +61,30 @@ function DashboardPage() {
     date.setMonth(date.getMonth() - i);
     months.push({
       label: date.toLocaleString('nl', { month: 'short' }),
-      value: date.toLocaleString('en-us', {
+      value: date.toLocaleString('en-US', {
         month: 'short',
         year: 'numeric',
       }),
     });
   }
   return months;
-}
+  }
+
+  function setMonth(monthValue) {
+    setSelectedMonth(monthValue);
+    setSelectedMndNL(new Date(monthValue).toLocaleString('nl', { month: 'short', year: 'numeric' }));
+  }
 
   return (
     <>
     <div className="top-container">
       <div className="text-container">
         <h1>Welkom, {currentUser.name}!</h1>
-        <p>Dit is uw persoonlijke financiële dashboard voor <span>{maand.charAt(0).toUpperCase() + maand.slice(1)} {jaar}</span></p>
+        <p>Dit is uw persoonlijke financiële dashboard voor <span>{selectedMndNL}</span></p>
       </div>
       <div className="last-three-months-container">
         {loadLastThreeMonths().map((month, index) => (
-        <button key={index} value={month.value} className={selectedMonth === month.value ? "month-button active": "month-button"} onClick={() => setSelectedMonth(month.value)}>
+        <button key={index} value={month.value} className={selectedMonth === month.value ? "month-button active": "month-button"} onClick={() => setMonth(month.value)}>
           {month.label}
         </button>
       ))}
