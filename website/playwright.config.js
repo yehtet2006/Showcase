@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
@@ -6,8 +7,9 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:5173',
     headless: true,
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    screenshot: 'on',
+    video: 'on',
+    storageState: 'playwright/.auth/user.json',
   },
 
   webServer: {

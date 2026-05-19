@@ -10,7 +10,7 @@ function SignInPage() {
     <div>
       <h1>Sign In</h1>
       <div className="signIn">
-        <SignIn afterSignInUrl="/dashboard" />
+        <SignIn afterSignInUrl="/" />
       </div>
       
     </div>
