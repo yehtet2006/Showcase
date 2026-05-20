@@ -4,6 +4,7 @@ import { data, Link, useNavigate } from "react-router";
 import AmountCard from "../components/AmountCard";
 import MonthlyBarChart from "../components/MonthlyBarChart";
 import ExpensePieChart from "../components/ExpenseChart";
+import AllTransactionPage from './AllTransactionsPage';
 import '../styles/dashboardPage.css'
 import { useDashboardData } from "../hooks/useTransactions";
 import { useCategories } from "../hooks/useCategories";
@@ -11,9 +12,6 @@ import { useState } from "react";
 
 function DashboardPage() {
   const {userId} = useAuth();
-  // Get current month and year for display
-  // const maand = new Date().toLocaleString('nl', { month: 'short' });
-  // const jaar = new Date().getFullYear();
   const today = new Date().toLocaleString('en-US', { month: 'short', year: 'numeric',});
 
   const [showCurrentMonth, setShowCurrentMonth] = useState(true);
@@ -33,11 +31,7 @@ function DashboardPage() {
 
   const selectedMonthData = dashboardData?.monthlyChart?.find(
     (item) => item.month === selectedMonth 
-  ) || { 
-    income: 0, 
-    expense: 0, 
-    savings: 0, 
-  };
+  ) || { income: 0, expense: 0, savings: 0, };
 
   const currentMonthExpenses = dashboardData?.expenseCategoriesPerMonth?.map((category) => {
     const monthData = category.monthlyData?.find((data) => data.month === selectedMonth)
@@ -164,6 +158,7 @@ function DashboardPage() {
     </div>
     <div className="recent-transactions-container">
       <h2>Recente Transacties</h2>
+      <AllTransactionPage recentOnly={true} />
     </div>
     </>
   )
