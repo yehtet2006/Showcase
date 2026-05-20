@@ -44,9 +44,12 @@ jobs:
         working-directory: ./businesslogic
         run: npm run build
 
+      # - name: Run Backend Tests
+      #   working-directory: ./businesslogic
+      #   run: npm test
       - name: Run Backend Tests
         working-directory: ./businesslogic
-        run: npm test
+        run: npm run test
 
       # Frontend
       - name: Install Frontend Dependencies
