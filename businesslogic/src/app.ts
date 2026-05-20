@@ -1,27 +1,27 @@
-// import express from "express";
-// import cors from "cors";
-// import { ENV } from "./config/env";
-// import { clerkMiddleware } from "@clerk/express";
 
-// import userRoutes from "./routes/userRoutes";
-// import categoriesRoutes from "./routes/categoriesRoutes";
-// import transactionsRoutes from "./routes/transactionsRoutes";
+import express from "express";
+import cors from "cors";
+import { clerkMiddleware } from "@clerk/express";
 
-// const app = express();
+import userRoutes from "./routes/userRoutes";
+import categoriesRoutes from "./routes/categoriesRoutes";
+import transactionsRoutes from "./routes/transactionsRoutes";
 
-// app.use(express.json());
-// app.use(clerkMiddleware());
-// app.use(express.urlencoded({ extended: true }));
-// app.use(cors({ origin: ENV.FRONTEND_URL, credentials: true }));
+const app = express();
 
-// app.get("/api/health", (req, res) => {
-//   res.status(200).json({
-//     message: "The server is running fine",
-//   });
-// });
+app.use(express.json());
+app.use(clerkMiddleware());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
-// app.use("/api/users", userRoutes);
-// app.use("/api/categories", categoriesRoutes);
-// app.use("/api/transactions", transactionsRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/categories", categoriesRoutes);
+app.use("/api/transactions", transactionsRoutes);
 
-// export default app;
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    message: "Server healthy",
+  });
+});
+
+export default app;
