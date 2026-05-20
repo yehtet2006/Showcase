@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - feature/*
 
   pull_request:
     branches:
@@ -52,9 +53,13 @@ jobs:
         working-directory: ./website
         run: npm ci
 
-      - name: Run Frontend Tests
+      # - name: Run Frontend Tests
+      #   working-directory: ./website
+      #   run: npm test
+
+      - name: E2E Tests
         working-directory: ./website
-        run: npm test
+        run: npm run test:e2e
 
       - name: Build Frontend
         working-directory: ./website
