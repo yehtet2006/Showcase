@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import SelectedTransactionForm from "../components/SelectedTransactionForm";
 
-function AllTransactionsPage() {
+function AllTransactionsPage({...props}) {
     const { userId } = useAuth();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ function AllTransactionsPage() {
     const updateTransactionMutation = useUpdateTransaction();
 
   return (
-    <div>
+    <div {...props}>
         <Link className="back" to="/transactions/add">+ Voeg een transactie toe</Link>
         <div className='all-transactions-container'>
         <li className="transaction-header">
