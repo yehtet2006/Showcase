@@ -7,8 +7,8 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:5173',
     headless: true,
-    screenshot: 'on',
-    video: 'on',
+    screenshot: 'only-on-failure',
+    video: "on-first-retry",
     storageState: 'playwright/.auth/user.json',
   },
 

@@ -85,90 +85,58 @@ function TransactionsPage() {
     }
   };
 
-
-
   return (
     <div className='main-container'>
       <div className='add-transaction-container'>
         <h1>Add Transaction</h1>
-        
-        <form onSubmit={handleSubmit} className='transaction-form'>
-          <label>Name:</label>
-          <input type="text" name="name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
-          <label>Amount:</label>
-          <input type="number" name="amount" value={formData.amount} onChange={(e) => setFormData({...formData, amount: e.target.value})} />
+        <form onSubmit={handleSubmit} className='transaction-form' data-testid="add-transaction-form">
+          <label data-testid="transaction-name-label">Name:</label>
+          <input data-testid="transaction-name-input" type="text" name="name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
           
-          <label>Type:</label>
+          <label data-testid="transaction-amount-label">Amount:</label>
+          <input data-testid="transaction-amount-input" type="number" name="amount" value={formData.amount} onChange={(e) => setFormData({...formData, amount: e.target.value})} />
 
+          <label data-testid="transaction-type-label">Type:</label>
           <div className="type-toggle">
-            <button
-              type="button"
-              className={formData.type === "income" ? "active income-btn" : ""}
-              onClick={() => setFormData({ ...formData, type: "income" })}
-            >
+            <button data-testid="transaction-income-button" type="button" className={formData.type === "income" ? "active income-btn" : ""} onClick={() => setFormData({ ...formData, type: "income" })}>
               Inkomen
             </button>
-
-            <button
-              type="button"
-              className={formData.type === "expense" ? "active expense-btn" : ""}
-              onClick={() => setFormData({ ...formData, type: "expense" })}
-            >
+            <button data-testid="transaction-expense-button" type="button" className={formData.type === "expense" ? "active expense-btn" : ""} onClick={() => setFormData({ ...formData, type: "expense" })}>
               Uitgaven
             </button>
-
-            <button
-              type="button"
-              className={formData.type === "savings" ? "active savings-btn" : ""}
-              onClick={() => setFormData({ ...formData, type: "savings" })}
-            >
+            <button data-testid="transaction-savings-button" type="button" className={formData.type === "savings" ? "active savings-btn" : ""} onClick={() => setFormData({ ...formData, type: "savings" })}>
               Sparen
             </button>
           </div>
           
-          <label>Date:</label>
-          <input type="date" name="date" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} />
-          <label>Description:</label>
-          <textarea name="description" value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} /> 
-          <label>Category:</label>
-          <select
-            name="categoryId"
-            value={formData.categoryId}
-            onChange={(e) =>
-              setFormData({ ...formData, categoryId: e.target.value })
-            }
-          >
+          <label data-testid="transaction-date-label">Date:</label>
+          <input data-testid="transaction-date-input" type="date" name="date" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} />
+          
+          <label data-testid="transaction-description-label">Description:</label>
+          <textarea data-testid="transaction-description-input" name="description" value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} /> 
+          
+          <label data-testid="transaction-category-label">Category:</label>
+          <select data-testid="transaction-category-select" name="categoryId" value={formData.categoryId} onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}>
             <option value="">Select a category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-              
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
             ))}
           </select>
 
           {/* Add new category */}
           <div className='add-category-container'>
-            <input
-              className='category-input'
-              type="text"
-              placeholder="New category"
-              value={newCategory.name}
-              onChange={(e) => setNewCategory({...newCategory, name: e.target.value})}
-            />
-            <input
-              type="color"
-              value={newCategory.color}
-              onChange={(e) => setNewCategory({...newCategory, color: e.target.value})}
-            />
-            <button type="button" onClick={handleAddCategory}>
+            <input data-testid="new-category-name-input" className='category-input' type="text" placeholder="Add new category" value={newCategory.name} onChange={(e) => setNewCategory({...newCategory, name: e.target.value})}/>
+            <input data-testid="new-category-color-input" type="color" value={newCategory.color} onChange={(e) => setNewCategory({...newCategory, color: e.target.value})} />
+            <button data-testid="add-category-button" type="button" onClick={handleAddCategory}>
               Voeg categorie toe
             </button>
           </div>
-          <button type="submit" onClick={handleSubmit}>
+          <button data-testid="add-transaction-button" type="submit">
             Toevoegen
           </button>
-          <button className='reset' type="button" onClick={() => setFormData({
+          <button data-testid="reset-transaction-button" className='reset' type="button" onClick={() => setFormData({
             name: '',
             amount: '',
             type: '',
@@ -180,6 +148,8 @@ function TransactionsPage() {
           </button>
         </form>
       </div>
+
+      {/* All Transactions */}
       <div className='all-transactions-container'>
         <div className='top-row-filter'>
           <span>Recente Transacties</span> <br />
@@ -204,22 +174,14 @@ function TransactionsPage() {
                 <span className='expense'>-€{transaction.amount}</span>
               ) : null}</span>
               <span>{new Date(transaction.date).toLocaleDateString()}</span>
-              <span>{categories?.find((cat) => cat.id === transaction.categoryId)?.name || 'No category'}{categories?.find((cat) => cat.id === transaction.categoryId)?.color && (
-                <span className='color'
-                  style={{
-                    background: categories?.find((cat) => cat.id === transaction.categoryId)?.color,
-                    padding: '4px 8px',
-                    borderRadius: '6px',
-                    marginLeft: '8px'
-                  }}
-                >
-                </span>
-              )}</span>
+              <span>
+                {categories?.find((cat) => cat.id === transaction.categoryId)?.name || 'No category'}{categories?.find((cat) => cat.id === transaction.categoryId)?.color && (
+                  <span className='color' style={{background: categories?.find((cat) => cat.id === transaction.categoryId)?.color, padding: '4px 8px', borderRadius: '6px', marginLeft: '8px'}}></span>
+                )}
+              </span>
             </li>
           ))
-        ) : (
-          <p>No transactions found.</p>
-        )}
+        ) : (<p>No transactions found.</p>)}
         </ul>
       </div>
     </div>

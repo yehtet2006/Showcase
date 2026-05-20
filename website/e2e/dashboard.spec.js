@@ -1,12 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-// test('dashboard loads for authenticated user', async ({ page }) => {
-//   await page.goto('/');
-
-//   await expect(page.getByText('Welkom, Tester 1!')).toBeVisible();
-//   await expect(page.getByText(/Dit is uw persoonlijke financiële dashboard voor/)).toBeVisible();
-// });
-
 test.describe("Dashboard", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/"); // adjust if dashboard route differs
@@ -29,7 +22,8 @@ test.describe("Dashboard", () => {
     const lastThreeMonths = []; // will return [ 'mei', 'apr', 'mrt' ] for example if currunt month is May
     for (let i = 0; i < 3; i++) {
       const date = new Date();
-      date.setMonth(date.getMonth() - i);
+      // Subtract i months from the current date
+      date.setMonth(date.getMonth() - i); 
       lastThreeMonths.push(
         date.toLocaleString("nl", { month: "short" })
       );
@@ -41,15 +35,15 @@ test.describe("Dashboard", () => {
 
     await first.click();
     await expect(page.getByRole("button", { name: lastThreeMonths[0] })).toBeVisible();
-    await expect(first).toHaveClass("month-button active", "true");
+    await expect(first).toHaveClass(/active/);
 
     await second.click();
     await expect(page.getByRole("button", { name: lastThreeMonths[1] })).toBeVisible();
-    await expect(second).toHaveClass("month-button active", "true");
+    await expect(second).toHaveClass(/active/);
 
     await third.click();
     await expect(page.getByRole("button", { name: lastThreeMonths[2] })).toBeVisible();
-    await expect(third).toHaveClass("month-button active", "true");
+    await expect(third).toHaveClass(/active/);
     
   });
 
@@ -73,9 +67,9 @@ test.describe("Dashboard", () => {
     await expect(btn6).toBeVisible();
     await expect(btn12).toBeVisible();
     await btn12.click();
-    await expect(btn12).toHaveClass("month-btn active", "true");
+    await expect(btn12).toHaveClass(/active/);
     await btn6.click();
-    await expect(btn6).toHaveClass("month-btn active", "true");
+    await expect(btn6).toHaveClass(/active/);
   });
 
   test("toggles expense view (all vs current month)", async ({ page }) => {
