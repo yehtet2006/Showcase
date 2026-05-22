@@ -1,11 +1,11 @@
 import request from "supertest";
-import app from "../app";
-import * as transactionQueries from "../db/transactionsQueries";
-import * as categoryQueries from "../db/categoriesQueries";
+import app from "../../app";
+import * as transactionQueries from "../../db/transactionsQueries";
+import * as categoryQueries from "../../db/categoriesQueries";
 import { jest, describe, it, expect, beforeEach } from "@jest/globals";
 
-jest.mock("../db/transactionsQueries");
-jest.mock("../db/categoriesQueries");
+jest.mock("../../db/transactionsQueries");
+jest.mock("../../db/categoriesQueries");
 beforeEach(() => {
   jest.clearAllMocks();
 });
