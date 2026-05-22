@@ -12,5 +12,4 @@ test('auth setup', async ({ page }) => {
       path: 'playwright/.auth/user.json',
     });
   }
-  test.skip(true, 'Not on signin page');
 });
