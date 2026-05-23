@@ -60,6 +60,9 @@ jobs:
       # - name: Run Frontend Tests
       #   working-directory: ./website
       #   run: npm test
+      - name: Run Unit Tests for the user synchronization and authentication hook
+        working-directory: ./website
+        run: npm run test"
 
       - name: E2E Tests
         working-directory: ./website

@@ -32,7 +32,6 @@ function App() {
       {isSignedIn && <Navbar />}
       <main className='all-content-container'>
         <Routes>
-
             <Route path="/" element={isSignedIn ? <DashboardPage /> : <Navigate to="/signin" replace />}/>
             <Route path="/signin" element={isSignedIn ? <Navigate to="/" replace /> : <SignInPage />}/>
             <Route path="/transactions/add" element={isSignedIn ? <TransactionsPage /> : <Navigate to="/signin" replace />}/>
