@@ -21,7 +21,11 @@ jobs:
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
       CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
       FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+      VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+      VITE_API_URL: ${{ secrets.VITE_API_URL }}
       NODE_ENV: test
+      E2E_EMAIL: ${{ secrets.E2E_EMAIL }}
+      E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
 
     steps:
       - name: Checkout Repository
