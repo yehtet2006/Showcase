@@ -33,16 +33,24 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: |
-            businesslogic/package-lock.json
+            website/package-lock.json
 
-      - name: Install Backend Dependencies
-        working-directory: ./businesslogic
+      - name: Install Frontend Dependencies
+        working-directory: ./website
         run: npm ci
+      
+      - name: Install Playwright Browsers
+        working-directory: ./website
+        run: npx playwright install chromium
 
-      - name: Run Backend Tests
-        working-directory: ./businesslogic
+      - name: Run Unit Tests for the user synchronization and authentication hook
+        working-directory: ./website
         run: npm test
 
-      - name: Build Backend
-        working-directory: ./businesslogic
+      - name: E2E Tests
+        working-directory: ./website
+        run: npm run test:e2e
+
+      - name: Build Frontend
+        working-directory: ./website
         run: npm run build
