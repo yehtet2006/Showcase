@@ -291,3 +291,21 @@
     font-size: 22px;
   }
 }
+
+.recent-transactions-container {
+  /* padding: 2em; */
+  max-height: 200px;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+.recent-transactions-container h2 {
+  margin-top: 0;
+  font-size: 28px;
+  position: sticky;
+  top: 0;
+  background: var(--background-color);
+  padding: 10px 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  height: 2em;
+  display: flex;
+}

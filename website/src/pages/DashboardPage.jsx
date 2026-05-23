@@ -4,6 +4,7 @@ import { data, Link, useNavigate } from "react-router";
 import AmountCard from "../components/AmountCard";
 import MonthlyBarChart from "../components/MonthlyBarChart";
 import ExpensePieChart from "../components/ExpenseChart";
+import AllTransactionPage from './AllTransactionsPage';
 import '../styles/dashboardPage.css'
 import { useDashboardData } from "../hooks/useTransactions";
 import { useCategories } from "../hooks/useCategories";
@@ -11,9 +12,6 @@ import { useState } from "react";
 
 function DashboardPage() {
   const {userId} = useAuth();
-  // Get current month and year for display
-  // const maand = new Date().toLocaleString('nl', { month: 'short' });
-  // const jaar = new Date().getFullYear();
   const today = new Date().toLocaleString('en-US', { month: 'short', year: 'numeric',});
 
   const [showCurrentMonth, setShowCurrentMonth] = useState(true);
@@ -33,11 +31,7 @@ function DashboardPage() {
 
   const selectedMonthData = dashboardData?.monthlyChart?.find(
     (item) => item.month === selectedMonth 
-  ) || { 
-    income: 0, 
-    expense: 0, 
-    savings: 0, 
-  };
+  ) || { income: 0, expense: 0, savings: 0, };
 
   const currentMonthExpenses = dashboardData?.expenseCategoriesPerMonth?.map((category) => {
     const monthData = category.monthlyData?.find((data) => data.month === selectedMonth)
@@ -79,45 +73,45 @@ function DashboardPage() {
     <>
     <div className="top-container">
       <div className="text-container">
-        <h1>Welkom, {currentUser.name}!</h1>
-        <p>Dit is uw persoonlijke financiële dashboard voor <span>{selectedMndNL}</span></p>
+        <h1 data-testid="Welcome-title">Welkom, {currentUser.name}!</h1>
+        <p data-testid="Dashboard-description">Dit is uw persoonlijke financiële dashboard voor <span>{selectedMndNL}</span></p>
       </div>
       <div className="last-three-months-container">
         {loadLastThreeMonths().map((month, index) => (
-        <button key={index} value={month.value} className={selectedMonth === month.value ? "month-button active": "month-button"} onClick={() => setMonth(month.value)}>
+        <button data-testid="month-button" key={index} value={month.value} className={selectedMonth === month.value ? "month-button active": "month-button"} onClick={() => setMonth(month.value)}>
           {month.label}
         </button>
       ))}
       </div>
       <div className="add-transaction">
         <Link to="/transactions/add">
-          <button className="add-transaction-button">+ Transactie toevoegen</button>
+          <button data-testid="add-transaction-button" className="add-transaction-button">+ Transactie toevoegen</button>
         </Link>
       </div>
     </div>
     <div className="dashboard-container">
       <div className="amount-card-container">
-        <AmountCard type="totaal" value={ selectedMonthData.income - selectedMonthData.expense - selectedMonthData.savings } />
-        <AmountCard type="inkomen" value={selectedMonthData.income} />
-        <AmountCard type="uitgaven" value={selectedMonthData.expense} />
-        <AmountCard type="sparen" value={dashboardData?.summary.totalSavings} />
+        <AmountCard data-testid="amount-card-total" type="totaal" value={ selectedMonthData.income - selectedMonthData.expense - selectedMonthData.savings } />
+        <AmountCard data-testid="amount-card-income" type="inkomen" value={selectedMonthData.income} />
+        <AmountCard data-testid="amount-card-expenses" type="uitgaven" value={selectedMonthData.expense} />
+        <AmountCard data-testid="amount-card-savings" type="sparen" value={dashboardData?.summary.totalSavings} />
       </div>
       {/* DESKTOP CHARTS */}
       <div className="charts-container">
-        <div className="graph-chart">
+        <div className="graph-chart" data-testid="income-expense-chart">
           <div className="graph-top">
             <h2 className="title">Inkomsten vs Uitgaven</h2>
             <div className="btn-container">
-              <button className={amountOfMonths === 6 ? "month-btn active" : "month-btn"} onClick={() => setAmountOfMonths(6)}> 6 M </button>
-              <button className={amountOfMonths === 12 ? "month-btn active" : "month-btn"} onClick={() => setAmountOfMonths(12)}> 12 M </button>
+              <button data-testid="month-btn-6" className={amountOfMonths === 6 ? "month-btn active" : "month-btn"} onClick={() => setAmountOfMonths(6)}> 6 M </button>
+              <button data-testid="month-btn-12" className={amountOfMonths === 12 ? "month-btn active" : "month-btn"} onClick={() => setAmountOfMonths(12)}> 12 M </button>
             </div>
           </div>
           {amountOfMonths === 6 ? (<MonthlyBarChart data={dashboardData?.monthlyChart.slice(6) || []} />) : (<MonthlyBarChart data={dashboardData?.monthlyChart || []} />)}
         </div>
-        <div className="pie-chart">
+        <div className="pie-chart" data-testid="expense-pie-chart">
           <div className="graph-top">
             {showCurrentMonth ? ( <h2 className="title">Uitgaven {currentMonth}</h2>) : (<h2 className="title">Uitgaven per categorie</h2>)}
-            <button className="month-btn active" onClick={() => setShowCurrentMonth(!showCurrentMonth)}>
+            <button data-testid="show-all-expenses-btn" className="month-btn active" onClick={() => setShowCurrentMonth(!showCurrentMonth)}>
               {showCurrentMonth ? "Toon alle uitgaven" : "Toon huidige maand"}
             </button>
           </div>
@@ -150,7 +144,7 @@ function DashboardPage() {
             <div className="graph-top">
               {showCurrentMonth ? (<h2>Uitgaven {currentMonth}</h2>) : (<h2>Uitgaven per categorie</h2>)}
 
-              <button className="month-btn active" onClick={() => setShowCurrentMonth(!showCurrentMonth)}>
+              <button data-testid="show-all-expenses-btn" className="month-btn active" onClick={() => setShowCurrentMonth(!showCurrentMonth)}>
                 {showCurrentMonth ? "Toon alle uitgaven" : "Toon huidige maand"}
               </button>
             </div>
@@ -164,6 +158,7 @@ function DashboardPage() {
     </div>
     <div className="recent-transactions-container">
       <h2>Recente Transacties</h2>
+      <AllTransactionPage data-testid="all-transaction-div" recentOnly={true} />
     </div>
     </>
   )

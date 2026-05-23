@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router'
+import { Route, Routes, Navigate } from 'react-router'
 import './index.css'
 import Navbar from './components/Navbar'
 import SignInPage from './pages/SignInPage'
@@ -32,13 +32,13 @@ function App() {
       {isSignedIn && <Navbar />}
       <main className='all-content-container'>
         <Routes>
-          <Route path="/"element={isSignedIn ? <DashboardPage /> : <SignInPage />} />
-          <Route path="/dashboard"element={isSignedIn ? <DashboardPage /> : <SignInPage />} />
-          <Route path='/transactions/add' element={isSignedIn && <TransactionsPage />} />
-          <Route path='/transactions' element={isSignedIn && <AllTransactionsPage />} />
-          <Route path='/analytics' element={isSignedIn && <AnalyticsPage />} />
-          <Route path='/profile' element={isSignedIn && <ProfilePage />} />
-          <Route path='/settings' element={currentUser?.role === "admin" && isSignedIn && <SettingsPage />} />
+            <Route path="/" element={isSignedIn ? <DashboardPage /> : <Navigate to="/signin" replace />}/>
+            <Route path="/signin" element={isSignedIn ? <Navigate to="/" replace /> : <SignInPage />}/>
+            <Route path="/transactions/add" element={isSignedIn ? <TransactionsPage /> : <Navigate to="/signin" replace />}/>
+            <Route path="/transactions" element={isSignedIn ? <AllTransactionsPage /> : <Navigate to="/signin" replace />}/>
+            <Route path="/analytics" element={isSignedIn ? <AnalyticsPage /> : <Navigate to="/signin" replace />}/>
+            <Route path="/profile" element={isSignedIn ? <ProfilePage /> : <Navigate to="/signin" replace /> }/>
+            <Route path="/settings" element={currentUser?.role === 'admin' && isSignedIn ? <SettingsPage /> : <Navigate to="/" replace />}/>
         </Routes>
       </main>
     </>

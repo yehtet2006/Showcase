@@ -1,6 +1,6 @@
-// import app from "./app";
-// // import { ENV } from "./config/env";
+import app from "./app";
+import { ENV } from "./config/env";
 
-// app.listen(8080, () => {
-//   console.log(`Server running on port 8080`);
-// });
+app.listen(ENV.PORT, () => {
+  console.log(`Server running on port ${ENV.PORT}`);
+});
