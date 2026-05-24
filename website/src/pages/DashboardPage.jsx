@@ -110,7 +110,7 @@ function DashboardPage() {
         </div>
         <div className="pie-chart" data-testid="expense-pie-chart">
           <div className="graph-top">
-            {showCurrentMonth ? ( <h2 className="title">Uitgaven {currentMonth}</h2>) : (<h2 className="title">Uitgaven per categorie</h2>)}
+            {showCurrentMonth ? ( <h2 className="title">Uitgaven {selectedMndNL}</h2>) : (<h2 className="title">Uitgaven per categorie</h2>)}
             <button data-testid="show-all-expenses-btn" className="month-btn active" onClick={() => setShowCurrentMonth(!showCurrentMonth)}>
               {showCurrentMonth ? "Toon alle uitgaven" : "Toon huidige maand"}
             </button>
@@ -142,7 +142,7 @@ function DashboardPage() {
         ) : (
           <div className="pie-chart">
             <div className="graph-top">
-              {showCurrentMonth ? (<h2>Uitgaven {currentMonth}</h2>) : (<h2>Uitgaven per categorie</h2>)}
+              {showCurrentMonth ? (<h2>Uitgaven {selectedMndNL}</h2>) : (<h2>Uitgaven per categorie</h2>)}
 
               <button data-testid="show-all-expenses-btn" className="month-btn active" onClick={() => setShowCurrentMonth(!showCurrentMonth)}>
                 {showCurrentMonth ? "Toon alle uitgaven" : "Toon huidige maand"}
