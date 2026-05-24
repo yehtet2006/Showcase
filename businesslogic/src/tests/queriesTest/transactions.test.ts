@@ -211,6 +211,9 @@ describe("REST API - Transactions", () => {
 
       expect(res.status).toBe(200);
       expect(res.body.summary).toBeDefined();
+      expect(res.body.monthlyChart).toBeDefined();
+      expect(res.body.expenseCategories).toBeDefined();
+      expect(res.body.expenseCategoriesPerMonth).toBeDefined();
     });
   });
 
