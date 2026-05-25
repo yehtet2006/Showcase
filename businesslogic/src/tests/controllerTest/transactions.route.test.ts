@@ -46,97 +46,96 @@ describe("Transactions Routes", () => {
         expect(transactionController.getTransactionById).toHaveBeenCalled();});
     });
 
-//   describe("POST /api/transactions", () => {
-//     it("should call createTransaction controller", async () => {
-//       (
-//         transactionController.createTransaction as jest.Mock
-//       ).mockImplementation((req: any, res: any) => {
-//         return res.status(201).json({
-//           transaction: {
-//             id: "1",
-//           },
-//         });
-//       });
+    describe("POST /api/transactions", () => {
+        it("should call createTransaction controller", async () => {
+        (
+            transactionController.createTransaction as jest.Mock
+        ).mockImplementation((req: any, res: any) => {
+            return res.status(201).json({
+            transaction: {
+                id: "1",
+            },
+            });
+        });
 
-//       const res = await request(app)
-//         .post("/api/transactions")
-//         .send({
-//           name: "Salary",
-//         });
+        const res = await request(app)
+            .post("/api/transactions")
+            .send({
+            name: "Salary",
+            });
 
-//       expect(res.status).toBe(201);
+        expect(res.status).toBe(201);
 
-//       expect(
-//         transactionController.createTransaction
-//       ).toHaveBeenCalled();
-//     });
-//   });
+        expect(
+            transactionController.createTransaction
+        ).toHaveBeenCalled();
+        });
+    });
 
-//   describe("PUT /api/transactions/:id", () => {
-//     it("should call updateTransaction controller", async () => {
-//       (
-//         transactionController.updateTransaction as jest.Mock
-//       ).mockImplementation((req: any, res: any) => {
-//         return res.status(200).json({
-//           transaction: {
-//             id: "1",
-//           },
-//         });
-//       });
+    describe("PUT /api/transactions/:id", () => {
+        it("should call updateTransaction controller", async () => {
+        (
+            transactionController.updateTransaction as jest.Mock
+        ).mockImplementation((req: any, res: any) => {
+            return res.status(200).json({
+            transaction: {
+                id: "1",
+            },
+            });
+        });
 
-//       const res = await request(app)
-//         .put("/api/transactions/1")
-//         .send({
-//           name: "Updated",
-//         });
+        const res = await request(app)
+            .put("/api/transactions/1")
+            .send({
+            naam: "Updated",
+            });
 
-//       expect(res.status).toBe(200);
+        expect(res.status).toBe(200);
+       
+        expect(transactionController.updateTransaction).toHaveBeenCalled();
+        });
+        
+    });
 
-//       expect(
-//         transactionController.updateTransaction
-//       ).toHaveBeenCalled();
-//     });
-//   });
+  describe("DELETE /api/transactions/:id", () => {
+    it("should call deleteTransaction controller", async () => {
+      (
+        transactionController.deleteTransaction as jest.Mock
+      ).mockImplementation((req: any, res: any) => {
+        return res.status(200).json({
+          message: "Deleted",
+        });
+      });
 
-//   describe("DELETE /api/transactions/:id", () => {
-//     it("should call deleteTransaction controller", async () => {
-//       (
-//         transactionController.deleteTransaction as jest.Mock
-//       ).mockImplementation((req: any, res: any) => {
-//         return res.status(200).json({
-//           message: "Deleted",
-//         });
-//       });
+      const res = await request(app)
+        .delete("/api/transactions/1");
 
-//       const res = await request(app)
-//         .delete("/api/transactions/1");
+      expect(res.status).toBe(200);
 
-//       expect(res.status).toBe(200);
+      expect(
+        transactionController.deleteTransaction
+      ).toHaveBeenCalled();
+    });
+  });
 
-//       expect(
-//         transactionController.deleteTransaction
-//       ).toHaveBeenCalled();
-//     });
-//   });
+  describe("GET /api/transactions/dashboard/stats", () => {
+    it("should call getDashboardStats controller", async () => {
+      (
+        transactionController.getDashboardStats as jest.Mock
+      ).mockImplementation((req: any, res: any) => {
+        return res.status(200).json({
+          summary: {},
+        });
+      });
 
-//   describe("GET /api/transactions/dashboard/stats", () => {
-//     it("should call getDashboardStats controller", async () => {
-//       (
-//         transactionController.getDashboardStats as jest.Mock
-//       ).mockImplementation((req: any, res: any) => {
-//         return res.status(200).json({
-//           summary: {},
-//         });
-//       });
+      const res = await request(app)
+        .get("/api/transactions/dashboard/stats");
 
-//       const res = await request(app)
-//         .get("/api/transactions/dashboard/stats");
+      expect(res.status).toBe(200);
 
-//       expect(res.status).toBe(200);
-
-//       expect(
-//         transactionController.getDashboardStats
-//       ).toHaveBeenCalled();
-//     });
-//   });
+      expect(
+        transactionController.getDashboardStats
+      ).toHaveBeenCalled();
+    });
+  });
 });
