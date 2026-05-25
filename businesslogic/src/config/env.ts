@@ -1,7 +1,9 @@
 import dotenv from 'dotenv';
 
-dotenv.config({quiet: true}); // Load environment variables from .env file into process.env, and suppress warnings if the .env file is missing
+// Load environment variables from .env file into process.env, and suppress warnings if the .env file is missing
+dotenv.config({quiet: true}); 
 
+// Export the environment variables as a typed object for use throughout the application
 export const ENV = {
     PORT: process.env.PORT,
     DATABASE_URL: process.env.DATABASE_URL,

@@ -76,3 +76,48 @@ export const getExpenseCategories = async (userId: string) => {
         })
     );
 };
+
+export const getExpenseCategoriesPerMonth = async (userId: string) => {
+    const expenseTransactions = await db.query.transactions.findMany({
+        where: and(
+            eq(transactions.userId, userId),
+            eq(transactions.type, "expense")
+        ),
+        with: {
+            category: true,
+        },
+    });
+
+    const categoryMonthMap: Record<string, Record<string, number>> = {};
+    expenseTransactions.forEach((transaction) => {
+        const categoryName =
+            transaction.category?.name || "Other";
+        const month = transaction.date.toLocaleString("en-us", {
+            month: "short",
+            year: "numeric",
+        });
+        if (!categoryMonthMap[categoryName]) {
+            categoryMonthMap[categoryName] = {};
+        }
+        if (!categoryMonthMap[categoryName][month]) {
+            categoryMonthMap[categoryName][month] = 0;
+        }
+        categoryMonthMap[categoryName][month] += Number(transaction.amount);
+    }); 
+
+    // return expenseTransactions.map((transaction) => ({
+    //     category: transaction.category?.name || "None",
+    //     amount: Number(transaction.amount),
+    //     month: transaction.date.toLocaleString("default", {
+    //         month: "long",
+    //         year: "numeric",
+    //     }),
+    // }));
+    return Object.entries(categoryMonthMap).map(([category, monthData]) => ({
+        category,
+        monthlyData: Object.entries(monthData).map(([month, amount]) => ({
+            month,
+            amount,
+        })),
+    }));
+};

@@ -189,25 +189,6 @@ export async function deleteTransaction(req: Request, res: Response) {
     }
 }
 
-// export async function getDashboardStats(req: Request, res: Response) {
-//     try {
-//         const { userId } = getAuth(req);
-
-//         if (!userId) {
-//             res.status(401).json({ error: "Unauthorized" });
-//             return;
-//         }
-
-//         const stats = await transactionQueries.getDashboardStats(userId);
-
-//         res.status(200).json({ stats });
-
-//     } catch (error) {
-//         console.log("Error getting dashboard stats:", error);
-//         res.status(500).json({ error: "Internal server error" });
-//     }
-// }
-
 export async function getDashboardStats(req: Request, res: Response) {
     try {
         const { userId } = getAuth(req);
@@ -218,17 +199,16 @@ export async function getDashboardStats(req: Request, res: Response) {
         }
 
         const summary = await transactionQueries.getDashboardStats(userId);
-
         const monthlyChart = await transactionQueries.getMonthlyIncomeExpense(userId);
-
         const expenseCategories = await categoryQueries.getExpenseCategories(userId);
+        const expenseCategoriesPerMonth = await categoryQueries.getExpenseCategoriesPerMonth(userId);
 
         res.status(200).json({
             summary,
             monthlyChart,
             expenseCategories,
+            expenseCategoriesPerMonth
         });
-
     } catch (error) {
         console.log(error);
         res.status(500).json({error: "Internal server error"});

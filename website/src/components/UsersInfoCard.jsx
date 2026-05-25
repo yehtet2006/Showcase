@@ -24,12 +24,12 @@ function UsersInfoCard() {
 
   return (
     <div className='users-info-card'>
-        <h2 className='text'>All Users:</h2>
+        <h2 className='text'>Alle Gebruikers</h2>
         <div className='header'>
-            <span>Name</span>
-            <span>Email</span>
-            <span>Role</span>
-            <span>Actions</span>
+            <span>Naam</span>
+            <span>E-mail</span>
+            <span>Rol</span>
+            <span>Acties</span>
         </div>
         <div>
             <ul className='user-list-container'>
@@ -52,7 +52,7 @@ function UsersInfoCard() {
                 
                 ))
             ) : (
-                <li className='text'>No users found.</li>
+                <li className='text'>Geen gebruikers gevonden.</li>
             )}
             </ul>
         </div>

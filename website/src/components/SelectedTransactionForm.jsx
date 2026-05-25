@@ -40,25 +40,25 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
             onSubmit(formData);
         }}>
             <div className="form-group">
-                <label>Name:</label>
+                <label>Naam:</label>
                 <input type="text" placeholder="Transaction Name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
             </div>
             <div className="form-group">
-                <label>Description:</label>
-                <textarea placeholder="Description" value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} required />
+                <label>Beschrijving:</label>
+                <textarea placeholder="Description" value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} />
             </div>
             <div className="form-group">
-                <label>Amount:</label>
+                <label>Bedrag:</label>
                 <input type="number" placeholder="Amount" value={formData.amount} onChange={(e) => setFormData({...formData, amount: e.target.value})} required />
             </div>
             <div className="form-group">
-                <label>Date:</label>
+                <label>Datum:</label>
                 <input type="date" placeholder="Date" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} required />
             </div>
             <div className="form-group-select">
-                <label>Category:</label>
+                <label>Categorie:</label>
                 <select value={formData.categoryId} onChange={(e) => setFormData({...formData, categoryId: e.target.value})} required>
-                    <option value="">Select a category</option>
+                    <option value="">Kies een categorie</option>
                     {categories && categories.map(category => (
                         <option key={category.id} value={category.id}>{category.name}</option>
                     ))}
@@ -73,7 +73,7 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
                     className={formData.type === "income" ? "active income-btn" : ""}
                     onClick={() => setFormData({ ...formData, type: "income" })}
                 >
-                    Income
+                    Inkomen
                 </button>
 
                 <button
@@ -81,7 +81,7 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
                     className={formData.type === "expense" ? "active expense-btn" : ""}
                     onClick={() => setFormData({ ...formData, type: "expense" })}
                 >
-                    Expense
+                    Uitgave
                 </button>
 
                 <button
@@ -89,16 +89,16 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
                     className={formData.type === "savings" ? "active savings-btn" : ""}
                     onClick={() => setFormData({ ...formData, type: "savings" })}
                 >
-                    Savings
+                    Sparen
                 </button>
                 </div>
             </div>
             {isError && <p className="error">Error updating transaction. Please try again.</p>}
             <button type="submit" disabled={isPending}>
-                {isPending ? 'Updating...' : 'Update Transaction'}
+                {isPending ? 'Bijwerken...' : 'Transactie bijwerken'}
             </button>
             <button type="button" id="dlt-btn" onClick={() => {
-                if (window.confirm('Are you sure you want to delete this transaction?')) {
+                if (window.confirm('Weet je zeker dat je deze transactie wilt verwijderen?')) {
                     deleteTransactionMutation.mutate(transaction.id, {  // transaction.id not selectedTransaction.id
                         onSuccess: () => {
                             onClose();
@@ -107,7 +107,7 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
                     });
                 }
             }}>
-                Delete
+                Verwijder
             </button>
         </form>
         </div>
