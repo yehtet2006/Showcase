@@ -37,7 +37,10 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
         <h2>Transaction Details</h2>
         <form onSubmit={(e) => {
             e.preventDefault();
-            onSubmit(formData);
+            onSubmit({
+                ...formData,
+                categoryId: formData.categoryId || null,
+        });
         }}>
             <div className="form-group">
                 <label>Naam:</label>
@@ -57,7 +60,7 @@ function SelectedTransactionForm({transaction, isPending, isError, onSubmit, onC
             </div>
             <div className="form-group-select">
                 <label>Categorie:</label>
-                <select value={formData.categoryId} onChange={(e) => setFormData({...formData, categoryId: e.target.value})} required>
+                <select value={formData.categoryId} onChange={(e) => setFormData({...formData, categoryId: e.target.value})}>
                     <option value="">Kies een categorie</option>
                     {categories && categories.map(category => (
                         <option key={category.id} value={category.id}>{category.name}</option>
