@@ -21,23 +21,23 @@ function SelectedUserForm({user, isPending, isError, onSubmit}) {
         onSubmit(formData);
       }}>
         <div className="form-group">
-          <label>Name:</label>
+          <label>Naam:</label>
           <input type="text" placeholder="Username" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
         </div>
         <div className="form-group">
-          <label>Email:</label>
+          <label>E-mail:</label>
           <input type="email" placeholder="Email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} required /> <br />
         </div>
         <div className="form-group">
-          <label>Role:</label>
+          <label>Rol:</label>
           <select value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})}>
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
+            <option value="user">Gebruiker</option>
+            <option value="admin">Beheerder</option>
         </select>
         </div>
         {isError && <p className="error">Error updating user. Please try again.</p>}
         <button type="submit" disabled={isPending}>
-          {isPending ? 'Updating...' : 'Update User'}
+          {isPending ? 'Bijwerken...' : 'Gebruiker bijwerken'}
         </button>
       </form>
       </div>

@@ -26,6 +26,7 @@ Welkom bij het Financieel Dashboard project! Dit project is ontwikkeld als onder
 - PostgreSQL – Database  
 - Node.js – Backend runtime  
 - Express – Web framework  
+- Clerk - Authentication 
 - TypeScript – Type safety  
 - JavaScript (JS) – Scripting  
 - React (JSX) – Frontend UI  
@@ -39,14 +40,12 @@ Binnen dit project wordt de Gitflow workflow gebruikt:
 
 - `main` → Bevat stabiele productiecode  
 - `develop` → Hoofdbranch voor development  
-- `feature/*` → Nieuwe features  
-- `bugfix/*` → Bugfixes  
+- `feature/*` → Nieuwe features   
 - `release/*` → Releases voorbereiden  
 
 ### Werkwijze
 
-1. Maak een nieuwe branch vanuit `develop`:  
-   `feature/nieuwe-functionaliteit`
+1. Maak een nieuwe branch vanuit `develop`:  `feature/nieuwe-functionaliteit`
 2. Werk je feature uit  
 3. Maak een Pull Request naar `develop`  
 4. Na goedkeuring wordt de code gemerged  
@@ -69,51 +68,7 @@ In dit project zijn beveiligingsmaatregelen genomen op basis van het threat mode
 
 ---
 
-## ⚙️ Installatie & Gebruik
+## Gebruik
 
-Clone repository
-```git clone <repo-url>```
-
-Installeer dependencies
-```npm install```
-
-Start backend
-```npm run dev```
-
-Start frontend
-```npm run dev```
-
-
-
-
-
-
+De webiste is online beschikbaar: https://showcase-8bgp.onrender.com/
 ---
-Setting up the backend
-
-npm installations for the backend
-npm init -y (package json)
-npm i express
-npm install express@5.2.1 cors@2.8.5 dotenv@17.2.3 drizzle-orm@0.44.7 pg@8.16.3 @clerk/express@1.0.1 
-
-i use typescript in the dev fase
-npm install -D typescript@5.9.3 ts-node@10.9.2 nodemon@3.1.11 drizzle-kit@0.31.7 @types/express@5.0.6 @types/cors@2.8.19 @types/pg@8.15.6
-
-add tsconfig.json so that type script can run with node
-
-scripts under de package.json
-    "dev": "nodemon",
-    "build": "tsc" will create a file under dist to compile ts into js
-add nodemon.json in de backend
-
-add .env file
--PORT, DB_URL, BASE_URl, NODE_ENV, CLERK KEys
-
-
-db push schema code
-
----
-Setting up the frontend
-
-npm installation for the frontend
-npm create vite@latest .

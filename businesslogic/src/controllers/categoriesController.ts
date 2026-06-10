@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import * as categoryQueries from "../db/categoriesQueries";
-
 import { getAuth } from "@clerk/express";
 
 export async function createCategory(req: Request, res: Response) {
@@ -20,11 +19,7 @@ export async function createCategory(req: Request, res: Response) {
             return;
         }
 
-        const category = await categoryQueries.createCategory({
-            userId,
-            name,
-            color,
-        });
+        const category = await categoryQueries.createCategory({ userId, name, color, });
         res.status(201).json({ category });
     } catch (error) {
         console.log("Error creating category:", error);
@@ -86,7 +81,7 @@ export async function deleteCategory(req: Request, res: Response) {
  
         const { id } = req.params as { id: string };
         await categoryQueries.deleteCategory(id, userId);
-        res.status(204).send();
+        res.status(204).json({ message: "Category deleted successfully" });
     } catch (error) {
         console.error("Error deleting category:", error);
         res.status(500).json({ error: "Internal server error" });
