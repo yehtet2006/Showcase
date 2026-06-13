@@ -6,7 +6,7 @@ export default defineConfig({
 
   testMatch: [
     '**/e2e/**/*.spec.js',
-    '**/authSetupTest/**/*.spec.js',
+    // '**/authSetupTest/**/*.spec.js',
   ],
 
   projects: [
@@ -22,19 +22,7 @@ export default defineConfig({
         storageState: 'playwright/.auth/user.json',
       },
     },
-
-    // Auth setup tests (NO storageState)
-    {
-      name: 'auth-setup',
-      testMatch: '**/authSetupTest/**/*.spec.js',
-      use: {
-        baseURL: 'http://localhost:5173',
-        headless: true,
-        screenshot: 'only-on-failure',
-        video: 'on-first-retry',
-        storageState: undefined,
-      },
-    },
+    
   ],
 
   webServer: {

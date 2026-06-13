@@ -28,4 +28,6 @@ dist-ssr
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/playwright
+/playwright/.auth/user.json
 
