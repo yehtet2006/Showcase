@@ -29,5 +29,5 @@ dist-ssr
 /blob-report/
 /playwright/.cache/
 /playwright
-S
+/playwright/.auth/user.json
 
