@@ -41,7 +41,6 @@ function TransactionsPage() {
         alert('Please fill in all required fields');
         return;
       }
-
       if (formData.type !== 'income' && formData.type !== 'expense' && formData.type !== 'savings') {
         alert('Please select a valid type');
         return;
